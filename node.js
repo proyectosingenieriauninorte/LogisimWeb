@@ -28,7 +28,7 @@ export class Node {
     }
 
     getNodeSize() {
-        return this.highlighted ? this.size * 8 : this.size;
+        return this.highlighted ? this.size * 16 : this.size;
     }
 
     // Método para resaltar el nodo
