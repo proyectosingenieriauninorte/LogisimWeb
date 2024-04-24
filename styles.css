@@ -1,0 +1,35 @@
+body {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+}
+
+#canvasContainer {
+  border: 2px solid black; /* Agrega el borde al contenedor */
+  display: inline-block;
+  margin: 20px;
+  width: 90vw;
+  height: 95vh;
+  position: relative; /* Permite posicionar el botón */
+  overflow: hidden; /* Habilita el desplazamiento */
+}
+
+#canvasContainer.dragging {
+    cursor: grabbing; /* Cambia el cursor a una mano cerrada mientras se arrastra */
+}
+
+#clearButton {
+  background-color: #f44336; /* Color de fondo */
+  border: none; /* Quita el borde */
+  border-radius: 5px; /* Redondea las esquinas */
+  bottom: 4em; /* Posiciona el botón */
+  color: white; /* Color del texto */
+  cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
+  font-size: 16px; /* Tamaño de la fuente */
+  padding: 10px; /* Espaciado interno */
+  position: absolute; /* Permite posicionar el botón */
+  right: 8em; /* Posiciona el botón */
+}
