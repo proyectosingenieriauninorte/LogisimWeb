@@ -9,7 +9,7 @@ var clearButton = document.getElementById('clearButton');
 // Importar la clase Node desde el archivo node.js
 import { Node } from './node.js';
 // Importar la clase Line desde el archivo line.js
-import { Line } from './line.js';
+import { Line, areEndsConnectedToOtherLine } from './line.js';
 
 // Variable global para el nodo seleccionado
 var selectedNode = null;
@@ -98,18 +98,45 @@ function createLine(startNode, endNode) {
         endNode.x % gridSize === 0 && endNode.y % gridSize === 0) {
         // Verificar si la línea es horizontal o vertical
         if (startNode.x === endNode.x || startNode.y === endNode.y) {
-            // Crear la línea
+            // Crear la nueva línea
             var line = new Line(startNode, endNode);
-            lines.push(line); // Agregar la línea al arreglo de líneas
+            lines.push(line); // Agregar la nueva línea al arreglo de líneas
             highlightEndNodes(line); // Resaltar los nodos extremos de la línea
-            drawLine(line);
-        }else{
+            drawLine(line); // Dibujar la línea en el canvas
+
+            // Verificar si los extremos de la nueva línea están conectados a otras líneas existentes
+            var existingConnections = areEndsConnectedToOtherLine(line, lines);
+            if (existingConnections !== null) {
+                // Fusionar las líneas existentes con la nueva línea
+                existingConnections.forEach(function(existingLine) {
+                    // Fusionar los nodos compartidos
+                    if (existingLine.startNode === startNode || existingLine.end === startNode) {
+                        if (existingLine.startNode === startNode) {
+                            existingLine.startNode = endNode;
+                        }
+                        if (existingLine.endNode === startNode) {
+                            existingLine.endNode = endNode;
+                        }
+                        existingLine.nodes.push(...line.nodes); // Agregar los nodos de la nueva línea a la línea existente
+                    }
+                });
+
+                // Eliminar la nueva línea del arreglo de líneas
+                var index = lines.indexOf(line);
+                if (index > -1) {
+                    lines.splice(index, 1);
+                }
+                
+            }
+        } else {
             unhighlightNodeIfNotEnd(startNode);
             drawGridPoints();
             console.log('Los nodos no están alineados horizontal o verticalmente');
         }
     }
+    console.log(lines);
 }
+
 // Función para resaltar un nodo
 function highlightNode(node) {
     node.highlight("blue");
@@ -130,7 +157,7 @@ function drawLine(line) {
     ctx.beginPath();
     ctx.strokeStyle = 'blue'; // Color de la línea
     ctx.lineWidth = 4; // Grosor de la línea
-    ctx.moveTo(line.startNode.x, line.startNode.y);
+    ctx.moveTo(line.startNode.x, line.startNode.y); // Mover el cursor al nodo de inicio
     for (let node of line.nodes) {
         ctx.lineTo(node.x, node.y);
     }

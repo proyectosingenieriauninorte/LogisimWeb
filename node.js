@@ -24,7 +24,7 @@ export class Node {
         // Calcular la distancia entre el punto dado y el centro del nodo
         const distance = Math.sqrt((pointX - this.x) ** 2 + (pointY - this.y) ** 2);
         // Si la distancia es menor o igual al radio del nodo más un pequeño margen, el punto está dentro del nodo
-        return distance <= (this.size + 10); // Añadimos un margen de 2 píxeles al radio del nodo
+        return distance <= (this.size + 10); // Añadimos un margen de 10 píxeles al radio del nodo
     }
 
     getNodeSize() {
