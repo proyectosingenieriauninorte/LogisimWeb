@@ -7,14 +7,16 @@ export class Node {
         this.y = y; // Posición y del nodo
         this.size = size; // Tamaño del nodo
         this.highlighted = false; // Estado del nodo (resaltado o no)
+        this.color = 'black'; // Color del nodo
     }
 
     // Método para dibujar el nodo en el canvas
     draw(ctx) {
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.getNodeSize(), 0, 2 * Math.PI);
-        ctx.fillStyle = 'black'; // Color del nodo según su estado
+        ctx.fillStyle = this.color; // Color del nodo según su estado
         ctx.fill();
+        ctx.closePath();
     }
 
     // Método para verificar si un punto está dentro del área del nodo
@@ -30,8 +32,9 @@ export class Node {
     }
 
     // Método para resaltar el nodo
-    highlight() {
+    highlight(color = 'red') {
         this.highlighted = true;
+        this.color = color;
     }
 
     // Método para quitar el resaltado del nodo

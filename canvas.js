@@ -104,25 +104,26 @@ function createLine(startNode, endNode) {
             highlightEndNodes(line); // Resaltar los nodos extremos de la línea
             drawLine(line);
         }else{
-            startNode.unhighlight();
+            unhighlightNodeIfNotEnd(startNode);
             drawGridPoints();
             console.log('Los nodos no están alineados horizontal o verticalmente');
         }
     }
 }
-
-
 // Función para resaltar un nodo
 function highlightNode(node) {
-    node.highlight();
+    node.highlight("blue");
     drawGridPoints();
 }
 
 // Función para resaltar los nodos extremos de una línea
 function highlightEndNodes(line) {
+    line.startNode.unhighlight();
+    line.startNode.highlight();
     line.endNode.highlight();
     drawGridPoints();
 }
+
 
 // Función para dibujar una línea en el canvas
 function drawLine(line) {
@@ -134,6 +135,15 @@ function drawLine(line) {
         ctx.lineTo(node.x, node.y);
     }
     ctx.stroke();
+}
+
+function unhighlightNodeIfNotEnd(node) {
+    for (var i = 0; i < lines.length; i++) {
+        if (lines[i].startNode === node || lines[i].endNode === node) {
+            return; // Si el nodo es un extremo de alguna línea, no se unhighlight
+        }
+    }
+    node.unhighlight(); // Si no es un extremo, se unhighlight
 }
 
 
