@@ -99,37 +99,7 @@ function createLine(startNode, endNode) {
         // Verificar si la línea es horizontal o vertical
         if (startNode.x === endNode.x || startNode.y === endNode.y) {
             // Crear la línea
-            var line = new Line(startNode, endNode, []);
-            var connectedLines = areEndsConnectedToOtherLine(line, lines);
-            if (connectedLines !== null) {
-                console.log('Los extremos de la línea están conectados a otra línea');
-                if (connectedLines.length === 1) {
-                    if (connectedLines[0].startNode === line.startNode) {
-                        line.startNode.unhighlight();
-                        connectedLines[0].startNode.unhighlight();
-                    }
-                    if (connectedLines[0].endNode === line.endNode) {
-                        line.endNode.unhighlight();
-                        connectedLines[0].endNode.unhighlight();
-                    }
-                    if (connectedLines[0].startNode === line.endNode) {
-                        line.endNode.unhighlight();
-                        connectedLines[0].startNode.unhighlight();
-                    }
-                    if (connectedLines[0].endNode === line.startNode) {
-                        line.startNode.unhighlight();
-                        connectedLines[0].endNode.unhighlight();
-                    }
-                    var nodes = [...connectedLines[0].nodes, ...line.nodes];
-                    var startNode = connectedLines[0].startNode;
-                    var endNode = line.endNode;
-                    // Borrar las líneas conectadas
-                    lines.splice(lines.indexOf(connectedLines[0]), 1);
-
-                    // Crear una nueva línea con los nodos conectados
-                    line = new Line(startNode, endNode, nodes);
-                }
-            }
+            var line = new Line(startNode, endNode);
             lines.push(line); // Agregar la línea al arreglo de líneas
             highlightEndNodes(line); // Resaltar los nodos extremos de la línea
             drawLine(line);
@@ -139,7 +109,7 @@ function createLine(startNode, endNode) {
             console.log('Los nodos no están alineados horizontal o verticalmente');
         }
     }
-    console.log(lines);
+    
 }
 // Función para resaltar un nodo
 function highlightNode(node) {
