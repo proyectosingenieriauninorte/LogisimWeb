@@ -74,6 +74,7 @@ function handleCanvasClick(event) {
             highlightNode(clickedNode);
         } else {
             if (selectedNode !== clickedNode) {
+                console.log(selectedNode, clickedNode);
                 createLine(selectedNode, clickedNode);
             }
             selectedNode = null;
@@ -96,21 +97,16 @@ function createLine(startNode, endNode) {
     // Verificar si los nodos están en múltiplos de 20
     if (startNode.x % gridSize === 0 && startNode.y % gridSize === 0 &&
         endNode.x % gridSize === 0 && endNode.y % gridSize === 0) {
-        // Verificar si la línea es horizontal o vertical
-        if (startNode.x === endNode.x || startNode.y === endNode.y) {
-            // Crear la línea
-            var line = new Line(startNode, endNode);
-            lines.push(line); // Agregar la línea al arreglo de líneas
-            highlightEndNodes(line); // Resaltar los nodos extremos de la línea
-            drawLine(line);
-        }else{
-            unhighlightNodeIfNotEnd(startNode);
-            drawGridPoints();
-            console.log('Los nodos no están alineados horizontal o verticalmente');
-        }
+        
+        // Crear la línea
+        var line = new Line(startNode, endNode);
+        lines.push(line); // Agregar la línea al arreglo de líneas
+        console.log(lines);
+        highlightEndNodes(line); // Resaltar los nodos extremos de la línea
+        drawLine(line);
     }
-    
 }
+
 // Función para resaltar un nodo
 function highlightNode(node) {
     node.highlight("blue");
@@ -129,7 +125,7 @@ function highlightEndNodes(line) {
 // Función para dibujar una línea en el canvas
 function drawLine(line) {
     ctx.beginPath();
-    ctx.strokeStyle = 'black'; // Color de la línea
+    ctx.strokeStyle = 'blue'; // Color de la línea
     ctx.lineWidth = 8; // Grosor de la línea
     ctx.moveTo(line.startNode.x, line.startNode.y); // Mover el cursor al nodo de inicio
     for (let node of line.nodes) {
@@ -197,9 +193,6 @@ function dragCanvas(event) {
         dragStartY = event.clientY;
     }
 }
-
-
-
 
 // Llamar a la función para ajustar el tamaño del canvas al cargar la página
 resizeCanvas();
