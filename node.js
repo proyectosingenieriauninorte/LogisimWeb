@@ -2,12 +2,13 @@
 
 // Definir la clase Node para representar los nodos del canvas
 export class Node {
-    constructor(x, y, size) {
+    constructor(x, y, size, ctx) {
         this.x = x; // Posición x del nodo
         this.y = y; // Posición y del nodo
         this.size = size; // Tamaño del nodo
         this.highlighted = false; // Estado del nodo (resaltado o no)
         this.color = 'black'; // Color del nodo
+        this.draw(ctx); // Método para dibujar el nodo en el canvas
     }
 
     // Método para dibujar el nodo en el canvas
