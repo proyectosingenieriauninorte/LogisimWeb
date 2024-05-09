@@ -32,7 +32,7 @@ function initCanvas() {
             ctx.fill()
             ctx.closePath()
         }
-    }
+    }    
 }
 
 /* Redimensionamiento del canvas */
@@ -63,6 +63,9 @@ function clearCanvas() {
     // Limpiar el canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height)
 
+    // Limpiar la lista de líneas
+    lines = []
+
     // Llamar a la función para crear los nodos del canvas al cargar la página
     initCanvas()
 }
@@ -77,29 +80,31 @@ var isDragging = false
 // variables para dibujar el cable
 let initialPosition = { x: 0, y: 0 }
 let finalPosition = { x: 0, y: 0 }
-
-// Agregar eventos de ratón al contenedor del canvas
-canvasContainer.addEventListener('mousedown', startDragging)
-canvasContainer.addEventListener('mouseup', endDragging)
-canvasContainer.addEventListener('mousemove', dragCanvas)
+let lines = []
 
 // Función para iniciar el arrastre
 function startDragging(event) {
-    isDragging = true
-    dragStartX = event.clientX
-    dragStartY = event.clientY
+    //dragStartX = event.clientX
+    //dragStartY = event.clientY
     canvasContainer.classList.add('dragging') // Agregar clase 'dragging'
-
+    
     const coordinates = approximateCoordinates(gridSize, getMousePos(event))
     initialPosition = coordinates
-    finalPosition = coordinates
+    //finalPosition = coordinates
+    isDragging = true
 }
 
 // Función para finalizar el arrastre
 function endDragging() {
+    // Establecer la posición final de la línea y detener el dibujo
+    const coordinates = approximateCoordinates(gridSize, getMousePos(event))
+    finalPosition = coordinates
     isDragging = false
-    canvasContainer.classList.remove('dragging') // Quitar clase 'dragging'
 
+    // Agregar la línea actual a la lista de líneas
+    lines.push({ start: initialPosition, end: finalPosition })
+
+    // Dibujar la línea actualizada
     drawLine(ctx, addIntermediatePoint(initialPosition, finalPosition))
 }
 
@@ -120,8 +125,30 @@ function dragCanvas(event) {
 
         const coordinates = approximateCoordinates(gridSize, getMousePos(event))
         finalPosition = coordinates
+
+        // Limpiar el canvas
+        ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+        // Volver a dibujar los nodos base del canvas
+        initCanvas()
+
+        // Dibujar todas las líneas
+        drawAllLines()
+
+        // Dibujar la línea actualizada
+        drawLine(ctx, addIntermediatePoint(initialPosition, finalPosition))
     }
 }
+
+// Función para dibujar todas las líneas almacenadas en la lista de líneas
+function drawAllLines() {
+    lines.forEach(line => drawLine(ctx, addIntermediatePoint(line.start, line.end)))
+}
+
+// Agregar eventos de ratón al contenedor del canvas
+canvasContainer.addEventListener('mousedown', startDragging)
+canvasContainer.addEventListener('mouseup', endDragging)
+canvasContainer.addEventListener('mousemove', dragCanvas)
 
 /*Calculo de posición del mouse en el canvas*/
 
@@ -152,6 +179,7 @@ function drawPoint(x, y) {
     ctx.fill()
     ctx.closePath()
 }
+
 
 /* Inicialización del canvas */
 resizeCanvas()

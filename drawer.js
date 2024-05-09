@@ -38,3 +38,5 @@ export function addIntermediatePoint(point1, point2) {
     const point = { x: pointx, y: point2.y }
     return [point1, point, point2]
 }
+
+
