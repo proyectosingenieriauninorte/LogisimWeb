@@ -6,6 +6,7 @@ import { Line, areEndsConnectedToOtherLine } from './line.js';
 /* Base del canvas */
 
 // Obtener el canvas y el contexto 2D
+var canvasContainer = document.getElementById('canvasContainer');
 var canvas = document.getElementById("gridCanvas");
 var ctx = canvas.getContext("2d");
 
@@ -34,7 +35,6 @@ window.addEventListener("resize", resizeCanvas);
 
 // Función para ajustar el tamaño del canvas al tamaño de la pantalla
 function resizeCanvas() {
-    var canvasContainer = document.getElementById('canvasContainer');
     var containerWidth = canvasContainer.clientWidth; // Resta el margen del ancho del contenedor
     var containerHeight = canvasContainer.clientHeight; // Resta el margen del alto del contenedor
     canvas.width = containerWidth * 2;
@@ -60,7 +60,6 @@ function clearCanvas() {
     initCanvas();
 }
 
-
 /* Utilidad para arrastrar el canvas */
 
 // Variables para almacenar las coordenadas de inicio del arrastre
@@ -68,23 +67,16 @@ var dragStartX = 0;
 var dragStartY = 0;
 var isDragging = false;
 
-// Agregar eventos de ratón al contenedor del canvas
-canvasContainer.addEventListener('mousedown', startDragging);
-canvasContainer.addEventListener('mouseup', endDragging);
-canvasContainer.addEventListener('mousemove', dragCanvas);
-
 // Función para iniciar el arrastre
 function startDragging(event) {
     isDragging = true;
     dragStartX = event.clientX;
     dragStartY = event.clientY;
-    canvasContainer.classList.add('dragging'); // Agregar clase 'dragging'
 }
 
 // Función para finalizar el arrastre
 function endDragging() {
     isDragging = false;
-    canvasContainer.classList.remove('dragging'); // Quitar clase 'dragging'
 }
 
 // Función para arrastrar el canvas
@@ -116,8 +108,7 @@ function getMousePos(event) {
 // Obtener la posición del mouse dentro del canvas on click
 canvas.addEventListener('click', function(event) {
     var pos = getMousePos(event);
-    // drawPoint(pos.x, pos.y); DESCOMENTAR ESTA LINEA PARA VER EL PUNTO EN EL GRID
-    console.log(pos);
+    // drawPoint(pos.x, pos.y); //DESCOMENTAR ESTA LINEA PARA VER EL PUNTO EN EL GRID
 });
 
 // Ejemplo de localización de un punto en el grid
@@ -129,10 +120,41 @@ function drawPoint(x, y) {
     ctx.closePath();
 }
 
+// Cambio de modo de click
 
+// Obtener botones y darles sus respectivos eventos
+const btn_wire = document.getElementById('btn_wire')
+btn_wire.addEventListener('click', () => changeMode('wire'))
 
-/* Inicialización del canvas */
+const btn_hand = document.getElementById('btn_hand')
+btn_hand.addEventListener('click', () => changeMode('hand'))
+
+// Funcion que cambia el modo de click
+function changeMode(mode) {
+    document.getElementById('btn_wire').classList.remove('select')
+    document.getElementById('btn_hand').classList.remove('select')
+
+    switch (mode) {
+        case 'wire':
+            document.getElementById('btn_wire').classList.add('select')
+            canvasContainer.style.cursor = 'crosshair'
+            canvasContainer.removeEventListener('mousedown', startDragging);
+            canvasContainer.removeEventListener('mouseup', endDragging);
+            canvasContainer.removeEventListener('mousemove', dragCanvas);
+            break;
+        case 'hand':
+            document.getElementById('btn_hand').classList.add('select')
+            canvasContainer.style.cursor = 'grab'
+            canvasContainer.addEventListener('mousedown', startDragging);
+            canvasContainer.addEventListener('mouseup', endDragging);
+            canvasContainer.addEventListener('mousemove', dragCanvas);
+            break;
+    }
+}
+
+/* Inicialización */
 resizeCanvas();
+changeMode('wire')
 
 
 
