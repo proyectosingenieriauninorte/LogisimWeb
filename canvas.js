@@ -73,33 +73,33 @@ function clearCanvas() {
 /* Utilidad para arrastrar el canvas */
 
 // Variables para almacenar las coordenadas de inicio del arrastre
-var dragStartX = 0
-var dragStartY = 0
-var isDragging = false
+var drawStartX = 0
+var drawStartY = 0
+var isDrawing = false
 
 // variables para dibujar el cable
 let initialPosition = { x: 0, y: 0 }
 let finalPosition = { x: 0, y: 0 }
 let lines = []
 
-// Función para iniciar el arrastre
-function startDragging(event) {
+// Función para iniciar el dibujo
+function startDrawing(event) {
     //dragStartX = event.clientX
     //dragStartY = event.clientY
-    canvasContainer.classList.add('dragging') // Agregar clase 'dragging'
+    //canvasContainer.classList.add('dragging') // Agregar clase 'dragging'
     
     const coordinates = approximateCoordinates(gridSize, getMousePos(event))
     initialPosition = coordinates
     //finalPosition = coordinates
-    isDragging = true
+    isDrawing = true
 }
 
 // Función para finalizar el arrastre
-function endDragging() {
+function endDrawing() {
     // Establecer la posición final de la línea y detener el dibujo
     const coordinates = approximateCoordinates(gridSize, getMousePos(event))
     finalPosition = coordinates
-    isDragging = false
+    isDrawing = false
 
     // Agregar la línea actual a la lista de líneas
     lines.push({ start: initialPosition, end: finalPosition })
@@ -108,9 +108,9 @@ function endDragging() {
     drawLine(ctx, addIntermediatePoint(initialPosition, finalPosition))
 }
 
-// Función para arrastrar el canvas
-function dragCanvas(event) {
-    if (isDragging) {
+// Función para dibujar en el canvas
+function drawCanvas(event) {
+    if (isDrawing) {
         // var offsetX = event.clientX - dragStartX
         // var offsetY = event.clientY - dragStartY
         // canvasContainer.scrollLeft -= offsetX
@@ -130,7 +130,7 @@ function dragCanvas(event) {
         ctx.clearRect(0, 0, canvas.width, canvas.height)
 
         // Volver a dibujar los nodos base del canvas
-        initCanvas()
+        //initCanvas()
 
         // Dibujar todas las líneas
         drawAllLines()
@@ -146,9 +146,9 @@ function drawAllLines() {
 }
 
 // Agregar eventos de ratón al contenedor del canvas
-canvasContainer.addEventListener('mousedown', startDragging)
-canvasContainer.addEventListener('mouseup', endDragging)
-canvasContainer.addEventListener('mousemove', dragCanvas)
+canvasContainer.addEventListener('mousedown', startDrawing)
+canvasContainer.addEventListener('mouseup', endDrawing)
+canvasContainer.addEventListener('mousemove', drawCanvas)
 
 /*Calculo de posición del mouse en el canvas*/
 
