@@ -5,8 +5,11 @@ import { Line, areEndsConnectedToOtherLine } from './line.js'
 import {
     addIntermediatePoint,
     approximateCoordinates,
-    drawLine    
+    calculateMovementType,
+    compareCoordinates,
+    drawLine
 } from './drawer.js'
+import { getMousePos } from './util.js'
 
 /* Base del canvas */
 
@@ -17,13 +20,12 @@ function $(selector) {
 /* Obtener el canvas y el contexto 2D*/
 
 //Canvas delantero
-var canvasFront = document.getElementById('canvasFront');
-var ctxFront = canvasFront.getContext('2d');
+var canvasFront = document.getElementById('canvasFront')
+var ctxFront = canvasFront.getContext('2d')
 
 //Canvas trasero
 var canvasBack = document.getElementById('canvasBack')
 var ctxBack = canvasBack.getContext('2d')
-
 
 // Tamaño del grid y tamaño del punto
 var gridSize = 20
@@ -39,7 +41,7 @@ function initCanvas(ctx) {
             ctx.fill()
             ctx.closePath()
         }
-    }    
+    }
 }
 
 /* Redimensionamiento del canvas */
@@ -85,31 +87,31 @@ function clearCanvas() {
 // /* Utilidad para arrastrar el canvas */
 
 // Variables para almacenar las coordenadas de inicio del arrastre
-var dragStartX = 0;
-var dragStartY = 0;
-var isDragging = false;
+var dragStartX = 0
+var dragStartY = 0
+var isDragging = false
 
 // Función para iniciar el arrastre
 function startDragging(event) {
-    isDragging = true;
-    dragStartX = event.clientX;
-    dragStartY = event.clientY;
+    isDragging = true
+    dragStartX = event.clientX
+    dragStartY = event.clientY
 }
 
 // Función para finalizar el arrastre
 function endDragging() {
-    isDragging = false;
+    isDragging = false
 }
 
 // Función para arrastrar el canvas
 function dragCanvas(event) {
     if (isDragging) {
-        var offsetX = event.clientX - dragStartX;
-        var offsetY = event.clientY - dragStartY;
-        canvasContainer.scrollLeft -= offsetX;
-        canvasContainer.scrollTop -= offsetY;
-        dragStartX = event.clientX;
-        dragStartY = event.clientY;
+        var offsetX = event.clientX - dragStartX
+        var offsetY = event.clientY - dragStartY
+        canvasContainer.scrollLeft -= offsetX
+        canvasContainer.scrollTop -= offsetY
+        dragStartX = event.clientX
+        dragStartY = event.clientY
     }
 }
 
@@ -121,16 +123,20 @@ var isDrawing = false
 // variables para dibujar el cable
 let initialPosition = { x: 0, y: 0 }
 let finalPosition = { x: 0, y: 0 }
+let positions = []
 let lines = []
+let debug = []
+let desviation = false
 
 // Función para iniciar el dibujo
 function startDrawing(event) {
     //dragStartX = event.clientX
     //dragStartY = event.clientY
     canvasContainer.classList.add('dragging') // Agregar clase 'dragging'
-    
+
     const coordinates = approximateCoordinates(gridSize, getMousePos(event))
     initialPosition = coordinates
+    positions.push(initialPosition)
     //finalPosition = coordinates
     isDrawing = true
 }
@@ -140,42 +146,110 @@ function endDrawing() {
     // Establecer la posición final de la línea y detener el dibujo
     const coordinates = approximateCoordinates(gridSize, getMousePos(event))
     finalPosition = coordinates
+    positions.push(finalPosition)
     isDrawing = false
 
+    // debug part
+    const fiveFirst = debug.slice(0, 4)
+    console.log(fiveFirst)
+
+    const average = fiveFirst.reduce(
+        (acc, curr) => {
+            acc.x += curr.diff.x
+            acc.y += curr.diff.y
+            return acc
+        },
+        { x: 0, y: 0 }
+    )
+
+    if (
+        (average.x < 0 && average.y >= 0) ||
+        (average.x > 0 && average.y <= 0) ||
+        (average.x < 0 && average.y < 0)
+    ) {
+        desviation = true
+    }
+
+    console.log(average, 's')
+
     // Agregar la línea actual a la lista de líneas
-    lines.push({ start: initialPosition, end: finalPosition })
+    lines.push({ start: initialPosition, end: finalPosition, desviation })
 
     // Dibujar la línea actualizada
     //drawLine(ctxBack, addIntermediatePoint(initialPosition, finalPosition))
 
     drawAllLines()
-
+    // console.log(debug)
+    debug = []
+    desviation = false
 }
 
 // Función para arrastrar el canvas
 function drawCanvas(event) {
     if (isDrawing) {
-    
         const coordinates = approximateCoordinates(gridSize, getMousePos(event))
         finalPosition = coordinates
 
+        if (
+            !compareCoordinates(positions[positions.length - 1], finalPosition)
+        ) {
+            positions.push(finalPosition)
+
+            debug.push({
+                finalPosition,
+                initialPosition: positions[positions.length - 2],
+                diff: calculateMovementType(
+                    positions[positions.length - 2],
+                    finalPosition
+                )
+            })
+        }
         //Limpiar el canvas
         ctxFront.clearRect(0, 0, canvasFront.width, canvasFront.height)
-      
-        // Volver a dibujar los nodos base del canvas 
+
+        // Volver a dibujar los nodos base del canvas
         //initCanvas()
 
         // Dibujar todas las líneas
         //drawAllLines()
 
+        // debug part
+        const fiveFirst = debug.slice(0, 4)
+        // console.log(fiveFirst)
+
+        const average = fiveFirst.reduce(
+            (acc, curr) => {
+                acc.x += curr.diff.x
+                acc.y += curr.diff.y
+                return acc
+            },
+            { x: 0, y: 0 }
+        )
+        let aprox
+        if (
+            (average.x < 0 && average.y >= 0) ||
+            (average.x > 0 && average.y <= 0) ||
+            (average.x < 0 && average.y < 0)
+        ) {
+            aprox = true
+        }
+
         // Dibujar la línea actualizada
-        drawLine(ctxFront, addIntermediatePoint(initialPosition, finalPosition))
+        drawLine(
+            ctxFront,
+            addIntermediatePoint(initialPosition, finalPosition, aprox)
+        )
     }
 }
 
 // Función para dibujar todas las líneas almacenadas en la lista de líneas
 function drawAllLines() {
-    lines.forEach(line => drawLine(ctxBack, addIntermediatePoint(line.start, line.end)))
+    lines.forEach((line) =>
+        drawLine(
+            ctxBack,
+            addIntermediatePoint(line.start, line.end, line.desviation)
+        )
+    )
 }
 
 // Agregar eventos de ratón al contenedor del canvas
@@ -183,27 +257,12 @@ canvasContainer.addEventListener('mousedown', startDrawing)
 canvasContainer.addEventListener('mouseup', endDrawing)
 canvasContainer.addEventListener('mousemove', drawCanvas)
 
-/*Calculo de posición del mouse en el canvas*/
-
-// Función para obtener la posición del mouse en el canvas
-// Esta función te va a devolver un indice X y Y del punto mas cercano al mouse en el canvas cuando haces click, para convertirlo en
-// cordenadas de el punto en el grid solo multiplica por 20 la cordenada que te devuelva la función y en ese pixel se encontrara el punto
-// te dejo un ejemplo de como usar los indices que te devuelve la función en drawPoint(x, y) para dibujar un punto en el grid
-function getMousePos(event) {
-    var rect = canvasFront.getBoundingClientRect()
-    return {
-        x: Math.round(event.clientX - rect.left),
-        y: Math.round(event.clientY - rect.top)
-    }
-}
-
 // Obtener la posición del mouse dentro del canvas on click
 canvasBack.addEventListener('click', function (event) {
     var pos = getMousePos(event)
     // drawPoint(pos.x, pos.y); DESCOMENTAR ESTA LINEA PARA VER EL PUNTO EN EL GRID
     console.log(pos)
 })
-
 
 // Cambio de modo de click
 
@@ -215,43 +274,36 @@ const btn_hand = document.getElementById('btn_hand')
 btn_hand.addEventListener('click', () => changeMode('hand'))
 
 // Funcion que cambia el modo de click
- function changeMode(mode) {
-     document.getElementById('btn_wire').classList.remove('select')
-     document.getElementById('btn_hand').classList.remove('select')
+function changeMode(mode) {
+    document.getElementById('btn_wire').classList.remove('select')
+    document.getElementById('btn_hand').classList.remove('select')
 
     switch (mode) {
         case 'wire':
             document.getElementById('btn_wire').classList.add('select')
             canvasContainer.style.cursor = 'crosshair'
-            console.log("Modo wire")
-            canvasContainer.removeEventListener('mousedown', startDragging);
-            canvasContainer.removeEventListener('mouseup', endDragging);
-            canvasContainer.removeEventListener('mousemove', dragCanvas);
-            canvasContainer.addEventListener('mousedown', startDrawing);
-            canvasContainer.addEventListener('mouseup', endDrawing);
-            canvasContainer.addEventListener('mousemove', drawCanvas);
+            console.log('Modo wire')
+            canvasContainer.removeEventListener('mousedown', startDragging)
+            canvasContainer.removeEventListener('mouseup', endDragging)
+            canvasContainer.removeEventListener('mousemove', dragCanvas)
+            canvasContainer.addEventListener('mousedown', startDrawing)
+            canvasContainer.addEventListener('mouseup', endDrawing)
+            canvasContainer.addEventListener('mousemove', drawCanvas)
 
-            break;
+            break
         case 'hand':
             document.getElementById('btn_hand').classList.add('select')
             canvasContainer.style.cursor = 'grab'
-            canvasContainer.removeEventListener('mousedown', startDrawing);
-            canvasContainer.removeEventListener('mouseup', endDrawing);
-            canvasContainer.removeEventListener('mousemove', drawCanvas);
-            canvasContainer.addEventListener('mousedown', startDragging);
-            canvasContainer.addEventListener('mouseup', endDragging);
-            canvasContainer.addEventListener('mousemove', dragCanvas);
-            break;
+            canvasContainer.removeEventListener('mousedown', startDrawing)
+            canvasContainer.removeEventListener('mouseup', endDrawing)
+            canvasContainer.removeEventListener('mousemove', drawCanvas)
+            canvasContainer.addEventListener('mousedown', startDragging)
+            canvasContainer.addEventListener('mouseup', endDragging)
+            canvasContainer.addEventListener('mousemove', dragCanvas)
+            break
     }
 }
 
 /* Inicialización del canvas */
 resizeCanvas()
 changeMode('wire')
-
-
-
-
-
-
-

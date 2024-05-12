@@ -25,18 +25,23 @@ export function approximateCoordinates(number, coord) {
     return { x: approximatedX, y: approximatedY }
 }
 
-export function addIntermediatePoint(point1, point2) {
-    const diffX = point1.x - point2.x
-    const diffy = point1.y - point2.y
-    let pointx = point1.x
-    console.log({ diffX, diffy })
+export function calculateMovementType(coord1, coord2) {
+    const diffX = coord1.x - coord2.x
+    const diffY = coord1.y - coord2.y
 
-    // if (diffX < 0) {
-    //     pointx = point2.x
-    // }
-
-    const point = { x: pointx, y: point2.y }
-    return [point1, point, point2]
+    return {
+        x: diffX,
+        y: diffY
+    }
 }
 
+export function compareCoordinates(coord1, coord2) {
+    return coord1.x === coord2.x && coord1.y === coord2.y
+}
 
+export function addIntermediatePoint(point1, point2, variation = false) {
+    const point = !variation
+        ? { x: point1.x, y: point2.y }
+        : { x: point2.x, y: point1.y }
+    return [point1, point, point2]
+}
