@@ -14,18 +14,25 @@ function $(selector) {
     return document.querySelector(selector)
 }
 
-// Obtener el canvas y el contexto 2D
-var canvas = document.getElementById('gridCanvas')
-var ctx = canvas.getContext('2d')
+/* Obtener el canvas y el contexto 2D*/
+
+//Canvas delantero
+var canvasFront = document.getElementById('canvasFront');
+var ctxFront = canvasFront.getContext('2d');
+
+//Canvas trasero
+var canvasBack = document.getElementById('canvasBack')
+var ctxBack = canvasBack.getContext('2d')
+
 
 // Tamaño del grid y tamaño del punto
 var gridSize = 20
 var defaultPointSize = 0.5
 
 // Función para crear los nodos base del canvas
-function initCanvas() {
-    for (var x = 0; x <= canvas.width; x += gridSize) {
-        for (var y = 0; y <= canvas.height; y += gridSize) {
+function initCanvas(ctx) {
+    for (var x = 0; x <= canvasBack.width; x += gridSize) {
+        for (var y = 0; y <= canvasBack.height; y += gridSize) {
             ctx.beginPath()
             ctx.arc(x, y, defaultPointSize, 0, 2 * Math.PI)
             ctx.fillStyle = 'black' // Color del nodo según su estado
@@ -45,9 +52,12 @@ function resizeCanvas() {
     var canvasContainer = document.getElementById('canvasContainer')
     var containerWidth = canvasContainer.clientWidth // Resta el margen del ancho del contenedor
     var containerHeight = canvasContainer.clientHeight // Resta el margen del alto del contenedor
-    canvas.width = containerWidth * 2
-    canvas.height = containerHeight * 2
-    initCanvas()
+    canvasBack.width = containerWidth * 2
+    canvasBack.height = containerHeight * 2
+    canvasFront.width = containerWidth * 2
+    canvasFront.height = containerHeight * 2
+    initCanvas(ctxBack)
+    initCanvas(ctxFront)
 }
 
 /* Limpieza del canvas */
@@ -61,13 +71,15 @@ clearButton.addEventListener('click', clearCanvas)
 // Función para limpiar el canvas
 function clearCanvas() {
     // Limpiar el canvas
-    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    ctxBack.clearRect(0, 0, canvasBack.width, canvasBack.height)
+    ctxFront.clearRect(0, 0, canvasFront.width, canvasFront.height)
 
     // Limpiar la lista de líneas
     lines = []
 
     // Llamar a la función para crear los nodos del canvas al cargar la página
-    initCanvas()
+    initCanvas(ctxBack)
+    initCanvas(ctxFront)
 }
 
 // /* Utilidad para arrastrar el canvas */
@@ -134,7 +146,10 @@ function endDrawing() {
     lines.push({ start: initialPosition, end: finalPosition })
 
     // Dibujar la línea actualizada
-    drawLine(ctx, addIntermediatePoint(initialPosition, finalPosition))
+    //drawLine(ctxBack, addIntermediatePoint(initialPosition, finalPosition))
+
+    drawAllLines()
+
 }
 
 // Función para arrastrar el canvas
@@ -144,23 +159,23 @@ function drawCanvas(event) {
         const coordinates = approximateCoordinates(gridSize, getMousePos(event))
         finalPosition = coordinates
 
-        // Limpiar el canvas
-        ctx.clearRect(0, 0, canvas.width, canvas.height)
-
-        // Volver a dibujar los nodos base del canvas
-        initCanvas()
+        //Limpiar el canvas
+        ctxFront.clearRect(0, 0, canvasFront.width, canvasFront.height)
+      
+        // Volver a dibujar los nodos base del canvas 
+        //initCanvas()
 
         // Dibujar todas las líneas
-        drawAllLines()
+        //drawAllLines()
 
         // Dibujar la línea actualizada
-        drawLine(ctx, addIntermediatePoint(initialPosition, finalPosition))
+        drawLine(ctxFront, addIntermediatePoint(initialPosition, finalPosition))
     }
 }
 
 // Función para dibujar todas las líneas almacenadas en la lista de líneas
 function drawAllLines() {
-    lines.forEach(line => drawLine(ctx, addIntermediatePoint(line.start, line.end)))
+    lines.forEach(line => drawLine(ctxBack, addIntermediatePoint(line.start, line.end)))
 }
 
 // Agregar eventos de ratón al contenedor del canvas
@@ -175,7 +190,7 @@ canvasContainer.addEventListener('mousemove', drawCanvas)
 // cordenadas de el punto en el grid solo multiplica por 20 la cordenada que te devuelva la función y en ese pixel se encontrara el punto
 // te dejo un ejemplo de como usar los indices que te devuelve la función en drawPoint(x, y) para dibujar un punto en el grid
 function getMousePos(event) {
-    var rect = canvas.getBoundingClientRect()
+    var rect = canvasFront.getBoundingClientRect()
     return {
         x: Math.round(event.clientX - rect.left),
         y: Math.round(event.clientY - rect.top)
@@ -183,7 +198,7 @@ function getMousePos(event) {
 }
 
 // Obtener la posición del mouse dentro del canvas on click
-canvas.addEventListener('click', function (event) {
+canvasBack.addEventListener('click', function (event) {
     var pos = getMousePos(event)
     // drawPoint(pos.x, pos.y); DESCOMENTAR ESTA LINEA PARA VER EL PUNTO EN EL GRID
     console.log(pos)
