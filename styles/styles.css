@@ -10,9 +10,13 @@ body {
 }
 
 .btn_mode {
-  display: inline-block;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
   width: 30px;
   height: 30px;
+  font-size: 2em;
   padding: 2px;
   margin-right: 10px;
   border: 2px solid transparent;
