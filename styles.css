@@ -1,49 +1,51 @@
 html,
 body {
-    margin: 0;
-    padding: 0;
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
+  margin: 0;
+  padding: 0 10px;
+}
+
+.menu {
+  height: 50px;
+  display: flex;
+  align-items: center;
+}
+
+.btn_mode {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  padding: 2px;
+  margin-right: 10px;
+  border: 2px solid transparent;
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.btn_mode:active {
+  background-color: rgb(182, 182, 182);
+}
+
+.btn_mode.select {
+  border: 2px solid black;
 }
 
 #canvasContainer {
-    border: 2px solid black; /* Agrega el borde al contenedor */
-    display: inline-block;
-    margin: 20px;
-    width: 90vw;
-    height: 95vh;
-    position: relative; /* Permite posicionar el botón */
-    overflow: hidden; /* Habilita el desplazamiento */
-}
-
-#canvasContainer.dragging {
-    cursor: grabbing; /* Cambia el cursor a una mano cerrada mientras se arrastra */
+  width: 100%;
+  height: 90vh;
+  border: 2px solid black; /* Agrega el borde al contenedor */
+  overflow: hidden; /* Habilita el desplazamiento */
 }
 
 #clearButton {
-    background-color: #f44336; /* Color de fondo */
-    border: none; /* Quita el borde */
-    border-radius: 5px; /* Redondea las esquinas */
-    bottom: 4em; /* Posiciona el botón */
-    color: white; /* Color del texto */
-    cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
-    font-size: 16px; /* Tamaño de la fuente */
-    padding: 10px; /* Espaciado interno */
-    position: absolute; /* Permite posicionar el botón */
-    right: 8em; /* Posiciona el botón */
-}
-
-#info {
-    font-size: 16px; /* Tamaño de la fuente */
-    color: black; /* Color del texto */
-    display: flex;
-    padding: 10px;
-    justify-content: center;
-    align-items: center;
-    position: absolute; /* Permite posicionar el botón */
-    bottom: 1em; /* Posiciona el botón */
-    width: 80%; /* Ancho del contenedor */
-    background-color: #ddc2c2; /* Color de fondo */
+  padding: 10px; /* Espaciado interno */
+  margin-right: 0;
+  margin-left: auto;
+  color: white; /* Color del texto */
+  background-color: #f44336; /* Color de fondo */
+  border: none; /* Quita el borde */
+  border-radius: 5px; /* Redondea las esquinas */
+  cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
 }

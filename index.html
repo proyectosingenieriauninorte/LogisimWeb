@@ -1,17 +1,20 @@
 <!DOCTYPE html>
 <html lang="es">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Canvas Grid</title>
-        <link rel="stylesheet" href="styles.css" />
-    </head>
-    <body>
-        <div class="info" id="info"></div>
-        <div id="canvasContainer">
-            <canvas id="gridCanvas"></canvas>
-        </div>
-        <button id="clearButton">Limpiar Canvas</button>
-        <script type="module" src="canvas.js"></script>
-    </body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Canvas Grid</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <div class="menu">
+      <span id="btn_wire" class="btn_mode"><img src="images/wires.png"></span>
+      <span id="btn_hand" class="btn_mode"><img src="images/palm.png"></span>
+      <button id="clearButton">Limpiar Canvas</button>
+    </div>
+    <div id="canvasContainer">
+      <canvas id="gridCanvas"></canvas>
+    </div>
+    <script type="module" src="canvas.js"></script>
+  </body>
 </html>
