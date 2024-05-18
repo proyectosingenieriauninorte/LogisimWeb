@@ -9,8 +9,20 @@ body {
   align-items: center;
 }
 
-.btn_mode {
+.containerMode {
   display: inline-flex;
+  margin-left: 0;
+  margin-right: auto;
+}
+
+.containerOptions {
+  display: inline-flex;
+  margin-left: auto;
+  margin-right: 0;
+}
+
+.btn_mode {
+  display: flex;
   justify-content: center;
   align-items: center;
   user-select: none;
@@ -35,20 +47,31 @@ body {
   border: 2px solid black;
 }
 
+.btn_opt {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
+  width: 30px;
+  height: 30px;
+  font-size: 2em;
+  padding: 2px;
+  margin-left: 10px;
+  border: 2px solid black;
+
+  img {
+    width: 80%;
+    height: 80%;
+  }
+}
+
+.btn_opt:active {
+  background-color: rgb(182, 182, 182);
+}
+
 #canvasContainer {
   width: 100%;
   height: 90vh;
   border: 2px solid black; /* Agrega el borde al contenedor */
   overflow: hidden; /* Habilita el desplazamiento */
-}
-
-#clearButton {
-  padding: 10px; /* Espaciado interno */
-  margin-right: 0;
-  margin-left: auto;
-  color: white; /* Color del texto */
-  background-color: #f44336; /* Color de fondo */
-  border: none; /* Quita el borde */
-  border-radius: 5px; /* Redondea las esquinas */
-  cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
 }

@@ -1,7 +1,8 @@
 import Point from "./components/Point.js";
 import Line from "./components/Line.js";
-import Wire from "./components/wire.js";
-import Constant from "./components/Constant.js";
+import Wire from "./components/Wire.js";
+import Pin from "./components/Pin.js";
+import And from "./components/And.js";
 
 /* Base del canvas */
 
@@ -35,15 +36,15 @@ function clearAll() {
 	repaintCanvas();
 }
 // Obtener el botón de limpiar
-var clearButton = document.getElementById("clearButton");
+var clearButton = document.getElementById("btn_clear");
 clearButton.addEventListener("click", clearAll);
 
 // Funcion para repintar los componentes del canvas
 function repaintCanvas() {
 	ctx.clearRect(0, 0, canvas.width, canvas.height); // Limpiar el canvas
 	initCanvas(); // Repinta la grilla
-	// console.log(Wires);
-	// console.log(Components);
+	console.log("Wires:", Wires);
+	console.log("Components:", Components);
 	Wires.forEach((wire) => draw(wire)); // Pinta todos los cables
 	Components.forEach((comp) => draw(comp)); // Pinta todos los componentes
 }
@@ -54,6 +55,7 @@ function repaintCanvas() {
 var Wires = [];
 var Components = [];
 var temp_const = "1"; // Variable temporal para probar las diferentes constantes
+var gate_type = "";
 
 function addWire(pointA, pointB) {
 	// Crea la nueva linea
@@ -64,62 +66,95 @@ function addWire(pointA, pointB) {
 	let compA = getConnectedComponent(pointA);
 	let compB = getConnectedComponent(pointB);
 
-	// Calculamos el estado que va a contener el cable
-	let stateA = compA ? compA.getState() : "D";
-	let stateB = compB ? compB.getState() : "D";
-	let stateR = "";
-	if (stateA == stateB) {
-		stateR = stateA;
-	} else if (stateA == "D") {
-		stateR = stateB;
-	} else if (stateB == "D") {
-		stateR = stateA;
-	} else if (stateA != stateB) {
-		stateR = "E";
-	}
+	// Cable al que se le va a agregar la linea
+	let wire = null;
 
 	// Verifica los dos puntos seleccionados
 	if (compA instanceof Wire && compB instanceof Wire) {
-		// Crea el nuevo cable
-		let nwWire = new Wire();
-		// Une todas las lineas dentro del nuevo cable
-		nwWire.lines = Array.from(compA.lines).concat(Array.from(compB.lines));
-		nwWire.addLine(line);
-		nwWire.setState(stateR);
+		// Crea un nuevo cable que sera la union de los dos
+		wire = new Wire();
+		wire.lines = Array.from(compA.lines).concat(Array.from(compB.lines));
+		wire.inputs = Array.from(compA.inputs).concat(Array.from(compB.inputs));
+		wire.outputs = Array.from(compA.outputs).concat(
+			Array.from(compB.outputs)
+		);
+		wire.updateValue();
+
+		// Elimina las conexiones de los antiguos cables
+		compA.deleteAllConnections();
+		compB.deleteAllConnections();
+
+		// Actuliza las conexiones de los componentes conectados a
+		// los anteriores cables
+		wire.inputs.forEach((input) => input.addConnection(wire));
+		wire.outputs.forEach((output) => output.addConnection(wire));
 
 		// Elimina los antiguos cables
 		Wires = Wires.filter((comp) => comp != compA && comp != compB);
 		// Agrega el nuevo cable
-		Wires.push(nwWire);
+		Wires.push(wire);
 	} else if (compA instanceof Wire) {
-		compA.addLine(line);
-		compA.setState(stateR);
+		wire = compA;
 	} else if (compB instanceof Wire) {
-		compB.addLine(line);
-		compB.setState(stateR);
+		wire = compB;
 	} else {
 		// Si no existe crea un nuevo cable
-		let nwWire = new Wire();
-		nwWire.addLine(line);
-		nwWire.setState(stateR);
-		Wires.push(nwWire);
+		wire = new Wire();
+		Wires.push(wire);
+	}
+
+	wire.addLine(line); // Agrega la linea
+
+	// Agrega las entradas y/o salidas a las que esta conectada esta linea
+	if (compA instanceof Pin) {
+		switch (compA.type) {
+			case "out":
+				wire.addInput(compA);
+				break;
+			case "in":
+				wire.addOutput(compA);
+				break;
+		}
+		compA.addConnection(wire);
+	}
+	if (compB instanceof Pin) {
+		switch (compB.type) {
+			case "out":
+				wire.addInput(compB);
+				break;
+			case "in":
+				wire.addOutput(compB);
+				break;
+		}
+		compB.addConnection(wire);
 	}
 }
 
 // Obtiene el componente o cable al que esta conectado el punto
 function getConnectedComponent(point) {
-	let comp = Components.find((comp) => {
-		if (comp.isConnectedTo(point)) return true;
-	});
+	let comp = null;
+	for (let cp of Components) {
+		comp = cp.isConnectedTo(point);
+		if (comp) break;
+	}
 
 	if (comp) return comp;
 
-	comp = Wires.find((wire) => {
-		if (wire.isConnectedTo(point)) return true;
-	});
+	for (let cp of Wires) {
+		comp = cp.isConnectedTo(point);
+		if (comp) break;
+	}
 
 	return comp;
 }
+
+// Funcion para actualizar el estado de los cables
+function reloadWires() {
+	Wires.forEach((wire) => wire.updateValue());
+	repaintCanvas();
+}
+const btn_reload = document.getElementById("btn_reload");
+btn_reload.addEventListener("click", reloadWires);
 
 // Funcion para eliminar todos los componentes
 function clearComponents() {
@@ -131,7 +166,6 @@ function clearComponents() {
 
 var selectedPoint = null; // Nodo seleccionado
 
-// Función para manejar el clic del mouse en el canvas
 function handleClickWire(event) {
 	var rect = canvas.getBoundingClientRect();
 	var mouseX = event.clientX - rect.left;
@@ -140,15 +174,12 @@ function handleClickWire(event) {
 
 	// Verifica si existe un punto ya seleccionado
 	if (!selectedPoint) {
-		selectedPoint = clickedPoint;
+		selectedPoint = clickedPoint; // Guarda el primer punto seleccionado
 		drawPoint(clickedPoint.x, clickedPoint.y);
 	} else if (!selectedPoint.isEqualTo(clickedPoint)) {
-		// Crea un nuevo cable
-		addWire(selectedPoint, clickedPoint);
-
-		// Resetea el punto seleccionado
-		selectedPoint = null;
-		repaintCanvas();
+		addWire(selectedPoint, clickedPoint); // Crea un nuevo cable
+		selectedPoint = null; // Resetea el punto seleccionado
+		repaintCanvas(); // Repinta el canvas
 	}
 }
 
@@ -183,24 +214,84 @@ function dragCanvas(event) {
 	}
 }
 
-/* Modo para agregar constantes */
-function handleClickConst(event) {
+/* Modo para eliminar componentes */
+function handleClickDelete(event) {
 	var rect = canvas.getBoundingClientRect();
 	var mouseX = event.clientX - rect.left;
 	var mouseY = event.clientY - rect.top;
 	var clickedPoint = getPointGrid(mouseX, mouseY);
 
-	let constant = new Constant(clickedPoint, temp_const);
-	let wire = getConnectedComponent(constant.point);
-	if (wire) {
-		if (wire.getState() == "D") {
-			wire.setState(constant.getState());
-		} else if (wire.getState() != constant.getState()) {
-			wire.setState("E");
+	let comp = getConnectedComponent(clickedPoint);
+	if (comp) {
+		if (comp instanceof Wire) {
+			Wires = Wires.filter((wire) => wire != comp);
+		} else {
+			Components = Components.filter((wire) => wire != comp);
 		}
+
+		comp.deleteAllConnections();
+		repaintCanvas();
+	}
+}
+
+/* Modo para agregar pines */
+function handleClickPin(event) {
+	var rect = canvas.getBoundingClientRect();
+	var mouseX = event.clientX - rect.left;
+	var mouseY = event.clientY - rect.top;
+	var clickedPoint = getPointGrid(mouseX, mouseY);
+
+	let pin = null;
+	if (temp_const == -1) {
+		pin = new Pin(clickedPoint, "in");
+	} else {
+		pin = new Pin(clickedPoint, "out", temp_const);
+	}
+	let wire = getConnectedComponent(pin.point);
+	if (wire) {
+		if (pin.type == "in") {
+			wire.addOutput(pin);
+		} else if (pin.type == "out") {
+			wire.addInput(pin);
+		}
+
+		pin.addConnection(wire);
 	}
 
-	Components.push(constant);
+	Components.push(pin);
+	repaintCanvas();
+}
+
+/* Modo para agregar puertas */
+function handleClickGate(event) {
+	var rect = canvas.getBoundingClientRect();
+	var mouseX = event.clientX - rect.left;
+	var mouseY = event.clientY - rect.top;
+	var clickedPoint = getPointGrid(mouseX, mouseY);
+
+	let gate = null;
+	switch (gate_type) {
+		case "and":
+			gate = new And(clickedPoint);
+			break;
+	}
+
+	gate.inputs.forEach((pin) => {
+		let wire = getConnectedComponent(pin.point);
+		if (wire) {
+			wire.addOutput(pin);
+			pin.addConnection(wire);
+		}
+	});
+	gate.outputs.forEach((pin) => {
+		let wire = getConnectedComponent(pin.point);
+		if (wire) {
+			wire.addInput(pin);
+			pin.addConnection(wire);
+		}
+	});
+
+	Components.push(gate);
 	repaintCanvas();
 }
 
@@ -213,11 +304,20 @@ btn_wire.addEventListener("click", () => changeMode("wire"));
 const btn_hand = document.getElementById("btn_hand");
 btn_hand.addEventListener("click", () => changeMode("hand"));
 
+const btn_delete = document.getElementById("btn_delete");
+btn_delete.addEventListener("click", () => changeMode("delete"));
+
 const btn_const0 = document.getElementById("btn_const0");
 btn_const0.addEventListener("click", () => changeMode("const0"));
 
 const btn_const1 = document.getElementById("btn_const1");
 btn_const1.addEventListener("click", () => changeMode("const1"));
+
+const btn_probe = document.getElementById("btn_probe");
+btn_probe.addEventListener("click", () => changeMode("probe"));
+
+const btn_and = document.getElementById("btn_and");
+btn_and.addEventListener("click", () => changeMode("and"));
 
 // Funcion para cambiar el modo de click
 function changeMode(mode) {
@@ -231,6 +331,10 @@ function changeMode(mode) {
 	canvasContainer.removeEventListener("mouseup", endDragging);
 	canvasContainer.removeEventListener("mousemove", dragCanvas);
 
+	// Remueve todos los eventos para el modo eliminar
+	btn_delete.classList.remove("select");
+	canvas.removeEventListener("click", handleClickDelete);
+
 	/* 
 	// ¡¡NO BORRAR!! Se usara cuando se defina la forma de cambiar la constante y no sean
 	// botones separados. Mientras se usaran los botones separados (btn_const0, btn_const1)
@@ -241,7 +345,14 @@ function changeMode(mode) {
 	 */
 	btn_const0.classList.remove("select");
 	btn_const1.classList.remove("select");
-	canvas.removeEventListener("click", handleClickConst);
+	canvas.removeEventListener("click", handleClickPin);
+
+	// Remueve todos los eventos para el modo sonda
+	btn_probe.classList.remove("select");
+	canvas.removeEventListener("click", handleClickPin);
+
+	btn_and.classList.remove("select");
+	canvas.removeEventListener("click", handleClickGate);
 
 	switch (mode) {
 		case "wire":
@@ -260,13 +371,21 @@ function changeMode(mode) {
 			canvasContainer.addEventListener("mouseup", endDragging);
 			canvasContainer.addEventListener("mousemove", dragCanvas);
 			break;
+
+		case "delete":
+			btn_delete.classList.add("select");
+			canvasContainer.style.cursor = "crosshair"; // Cambia el cursor
+
+			// Eventos del click para el modo eliminar
+			canvas.addEventListener("click", handleClickDelete);
+			break;
 		// ¡¡TAMPOCO BORRAR!! esto tambien hace parte de lo mismo que se habla arriba
 		// case "const":
 		// 	btn_const.classList.add("select");
 		// 	canvasContainer.style.cursor = "crosshair"; // Cambia el cursor
 
 		// 	// Eventos del click para el modo constante
-		// 	canvas.addEventListener("click", handleClickConst);
+		// 	canvas.addEventListener("click", handleClickPin);
 		// 	break;
 		case "const0":
 			btn_const0.classList.add("select");
@@ -274,7 +393,7 @@ function changeMode(mode) {
 			temp_const = "0";
 
 			// Eventos del click para el modo constante
-			canvas.addEventListener("click", handleClickConst);
+			canvas.addEventListener("click", handleClickPin);
 			break;
 		case "const1":
 			btn_const1.classList.add("select");
@@ -282,7 +401,22 @@ function changeMode(mode) {
 			temp_const = "1";
 
 			// Eventos del click para el modo constante
-			canvas.addEventListener("click", handleClickConst);
+			canvas.addEventListener("click", handleClickPin);
+			break;
+		case "probe":
+			btn_probe.classList.add("select");
+			canvasContainer.style.cursor = "crosshair"; // Cambia el cursor
+			temp_const = "-1";
+
+			// Eventos del click para el modo constante
+			canvas.addEventListener("click", handleClickPin);
+			break;
+		case "and":
+			btn_and.classList.add("select");
+			canvasContainer.style.cursor = "crosshair"; // Cambia el cursor
+			gate_type = "and";
+
+			canvas.addEventListener("click", handleClickGate);
 			break;
 	}
 }
@@ -309,7 +443,7 @@ function getPointGrid(mouseX, mouseY) {
 
 /* Dibujar en el canvas */
 
-// Pinta un punto en el canvas dado una posicion X y Y
+// Dibuja un punto en el canvas dado una posicion X y Y
 function drawPoint(x, y, color = "black") {
 	ctx.beginPath();
 	ctx.arc(x * gridSize, y * gridSize, defaultPointSize * 8, 0, 2 * Math.PI);
@@ -318,22 +452,7 @@ function drawPoint(x, y, color = "black") {
 	ctx.closePath();
 }
 
-// Borra un punto en el canvas dado una posicion X y Y
-function erasePoint(x, y) {
-	ctx.beginPath();
-	ctx.arc(x * gridSize, y * gridSize, defaultPointSize * 4, 0, 2 * Math.PI);
-	ctx.fillStyle = "white"; // Color del nodo según su estado
-	ctx.fill();
-	ctx.closePath();
-
-	ctx.beginPath();
-	ctx.arc(x * gridSize, y * gridSize, defaultPointSize, 0, 2 * Math.PI);
-	ctx.fillStyle = "black"; // Color del nodo según su estado
-	ctx.fill();
-	ctx.closePath();
-}
-
-// Pinta una linea en el canvas
+// Dibuja una linea en el canvas
 function drawLine(line, color = "black") {
 	ctx.beginPath();
 	ctx.strokeStyle = color;
@@ -344,26 +463,74 @@ function drawLine(line, color = "black") {
 	ctx.closePath();
 }
 
-// Borra una linea en el canvas
-function eraseLine(line) {
-	// ...
-}
-
-function drawConstant(constant) {
-	drawPoint(constant.point.x, constant.point.y);
-	let wd = ctx.measureText(constant.state).width;
+// Dibuja un pin
+function drawPin(pin) {
+	let color = "";
+	let value = pin.value;
+	let x = pin.point.x;
+	let y = pin.point.y;
+	let wd = ctx.measureText(value).width;
 	let hg = 15;
-	let x = constant.point.x * gridSize - wd - 8;
-	let y = constant.point.y * gridSize + hg / 2 - 3;
+
+	switch (value) {
+		case "E":
+			color = "red";
+			break;
+		case "D":
+			color = "blue";
+			break;
+		case "0":
+			color = "#006400";
+			break;
+		case "1":
+			color = "#00d200";
+			break;
+		default:
+			color = "black";
+			break;
+	}
+
+	if (pin.type == "in") {
+		ctx.beginPath();
+		ctx.arc(
+			x * gridSize,
+			y * gridSize,
+			defaultPointSize * 8,
+			0,
+			2 * Math.PI
+		);
+		ctx.strokeStyle = color; // color del borde
+		ctx.lineWidth = 2;
+		ctx.stroke();
+		ctx.closePath();
+
+		x = x * gridSize + defaultPointSize * 8 + 3;
+		y = y * gridSize + hg / 2 - 3;
+	} else if (pin.type == "out") {
+		ctx.beginPath();
+		ctx.arc(
+			x * gridSize,
+			y * gridSize,
+			defaultPointSize * 8,
+			0,
+			2 * Math.PI
+		);
+		ctx.fillStyle = color; // Color del nodo según su estado
+		ctx.fill();
+		ctx.closePath();
+
+		x = x * gridSize - defaultPointSize * 8 - wd - 3;
+		y = y * gridSize + hg / 2 - 3;
+	}
 
 	ctx.beginPath();
-	ctx.fillStyle = constant.color;
+	ctx.fillStyle = color;
 	ctx.font = "bold " + hg + "px Arial";
-	ctx.fillText(constant.state, x, y);
+	ctx.fillText(value, x, y);
 	ctx.closePath();
 }
 
-// Borra un objeto cualquiera
+// Dibuja un objeto cualquiera
 function draw(obj) {
 	if (obj instanceof Point) {
 		drawPoint(obj.x, obj.y);
@@ -371,9 +538,9 @@ function draw(obj) {
 		drawLine(obj);
 	} else if (obj instanceof Wire) {
 		let color = "";
-		let state = obj.getState();
+		let value = obj.getValue();
 
-		switch (state) {
+		switch (value) {
 			case "E":
 				color = "red";
 				break;
@@ -392,11 +559,14 @@ function draw(obj) {
 		}
 
 		obj.lines.forEach((ln) => drawLine(ln, color));
-	} else if (obj instanceof Constant) {
-		drawConstant(obj);
+	} else if (obj instanceof Pin) {
+		drawPin(obj);
+	} else if (obj instanceof And) {
+		obj.inputs.forEach((pin) => draw(pin));
+		obj.outputs.forEach((pin) => draw(pin));
 	} else {
 		console.error("No se pudo pintar el objeto");
-		console.error(obj);
+		console.error("Objeto: ", obj);
 	}
 }
 

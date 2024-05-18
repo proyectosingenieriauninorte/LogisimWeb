@@ -8,11 +8,19 @@
   </head>
   <body>
     <div class="menu">
-      <span id="btn_wire" class="btn_mode"><img src="../images/wires.png"></span>
-      <span id="btn_hand" class="btn_mode"><img src="../images/palm.png"></span>
-      <span id="btn_const0" class="btn_mode">0</span>
-      <span id="btn_const1" class="btn_mode">1</span>
-      <button id="clearButton">Limpiar Canvas</button>
+      <div class="containerMode">
+        <span id="btn_wire" class="btn_mode"><img src="../images/wires.png"></span>
+        <span id="btn_hand" class="btn_mode"><img src="../images/palm.png"></span>
+        <span id="btn_delete" class="btn_mode"><img src="../images/cross.png"></span>
+        <span id="btn_const0" class="btn_mode">0</span>
+        <span id="btn_const1" class="btn_mode">1</span>
+        <span id="btn_probe" class="btn_mode"><img src="../images/circle.png"></span>
+        <span id="btn_and" class="btn_mode"><img src="../images/AND.png"></span>
+      </div>
+      <div class="containerOptions">
+        <span id="btn_reload" class="btn_opt" title="Recargar simulacion"><img src="../images/reload.png"></span>
+        <span id="btn_clear" class="btn_opt" title="Eliminar todo"><img src="../images/trash.png"></span>
+      </div>
     </div>
     <div id="canvasContainer">
       <canvas id="gridCanvas"></canvas>
