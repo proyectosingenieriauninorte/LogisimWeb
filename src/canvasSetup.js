@@ -34,13 +34,11 @@ export function resizeCanvas() {
     initCanvas(ctxFront,canvasFront)
 }
 
+
 export function clearCanvas() {
     // Limpiar el canvas
     ctxBack.clearRect(0, 0, canvasBack.width, canvasBack.height)
     ctxFront.clearRect(0, 0, canvasFront.width, canvasFront.height)
-
-    // Limpiar la lista de líneas
-    //lines = []
 
     // Llamar a la función para crear los nodos del canvas al cargar la página
     initCanvas(ctxBack)

@@ -1,3 +1,5 @@
+import Circuit from "../canvas.js"
+
 import { getMousePos} from "../utils/util.js"
 import {
     addIntermediatePoint,
@@ -8,6 +10,10 @@ import {
 } from '../utils/drawer.js'
 import { gridSize, defaultPointSize } from "../config/config.js"
 import { ctxBack, ctxFront,canvasFront } from "../src/canvasSetup.js"
+import circuit from "../src/circuit.js"
+import Point from "../components/Point.js"
+
+
 
 /* Utilidad para dibujar en el canvas */
 
@@ -18,7 +24,6 @@ var isDrawing = false
 let initialPosition = { x: 0, y: 0 }
 let finalPosition = { x: 0, y: 0 }
 let positions = []
-let lines = []
 let debug = []
 let desviation = false
 
@@ -45,7 +50,7 @@ export function endDrawing() {
 
     // debug part
     const fiveFirst = debug.slice(0, 4)
-    console.log(fiveFirst)
+    //console.log(fiveFirst)
 
     const average = fiveFirst.reduce(
         (acc, curr) => {
@@ -64,15 +69,21 @@ export function endDrawing() {
         desviation = true
     }
 
-    console.log(average, 's')
-
     // Agregar la línea actual a la lista de líneas
-    lines.push({ start: initialPosition, end: finalPosition, desviation })
-
+    var puntos =  addIntermediatePoint(initialPosition, finalPosition, desviation)
+    var pI = new Point(puntos[0].x, puntos[0].y)
+    var pE = new Point(puntos[1].x, puntos[1].y)
+    var pF = new Point(puntos[2].x, puntos[2].y) 
+    Circuit.addWire(pI,pE,pF)
+    
+        
     // Dibujar la línea actualizada
     //drawLine(ctxBack, addIntermediatePoint(initialPosition, finalPosition))
 
-    drawAllLines()
+    //Dibujar todas las lineas en el canvas trasero
+    Circuit.repaintCircuit()
+    //drawAllLines()
+    console.log(Circuit.Wires)
     // console.log(debug)
     debug = []
     desviation = false
@@ -138,10 +149,6 @@ export function drawCanvas(event) {
 
 // Función para dibujar todas las líneas almacenadas en la lista de líneas
 export function drawAllLines() {
-    lines.forEach((line) =>
-        drawLine(
-            ctxBack,
-            addIntermediatePoint(line.start, line.end, line.desviation)
-        )
+    Circuit.Wires.forEach((wire) => Circuit.draw(wire)
     )
 }
