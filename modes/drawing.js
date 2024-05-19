@@ -8,9 +8,8 @@ import {
     compareCoordinates,
     drawLine
 } from '../utils/drawer.js'
-import { gridSize, defaultPointSize } from "../config/config.js"
-import { ctxBack, ctxFront,canvasFront } from "../src/canvasSetup.js"
-import circuit from "../src/circuit.js"
+import { gridSize} from "../config/config.js"
+import { ctxFront,canvasFront } from "../src/canvasSetup.js"
 import Point from "../components/Point.js"
 
 
