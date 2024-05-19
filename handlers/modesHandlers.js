@@ -1,7 +1,8 @@
 import Pin from "../components/Pin.js";
 import Point from "../components/Point.js";
 import Wire from "../components/Wire.js";
-import { getPointGrid, getMousePos } from "../utils/util.js";
+import And from "../components/And.js";
+import { getMousePos } from "../utils/util.js";
 import Circuit from "../canvas.js";
 import { approximateCoordinates} from "../utils/drawer.js";
 import { gridSize } from "../config/config.js";
@@ -12,8 +13,8 @@ export function handleClickDelete(event) {
 	// var mouseX = event.clientX - rect.left;
 	// var mouseY = event.clientY - rect.top;
 	// clickedPoint = approximateCoordinates(mouseX, mouseY);
-	var coordinates = approximateCoordinates(gridSize, getMousePos(event))
-	var clickedPoint = new Point(coordinates.x,coordinates.y)
+	var coordinates = approximateCoordinates(gridSize, getMousePos(event));
+	var clickedPoint = new Point(coordinates.x,coordinates.y);
 	let comp = Circuit.getConnectedComponent(clickedPoint);
 	if (comp) {
 		if (comp instanceof Wire) {
@@ -28,11 +29,11 @@ export function handleClickDelete(event) {
 }
 
 /* Modo para agregar pines */
-var temp_const = "1";
-export function handleClickPin(event) {
+export function handleClickPin(event,temp_const) {
 	//var rect = canvasContainer.getBoundingClientRect();
 	//var mouseX = event.clientX - rect.left;
 	//var mouseY = event.clientY - rect.top;
+	//var temp_const = "1"
 	var coordinates = approximateCoordinates(gridSize, getMousePos(event))
 	var clickedPoint = new Point(coordinates.x,coordinates.y)
 	let pin = null;
@@ -59,11 +60,13 @@ export function handleClickPin(event) {
 }
 
 /* Modo para agregar puertas */
-function handleClickGate(event) {
-	var rect = canvas.getBoundingClientRect();
-	var mouseX = event.clientX - rect.left;
-	var mouseY = event.clientY - rect.top;
-	var clickedPoint = getPointGrid(mouseX, mouseY);
+export function handleClickGate(event,gate_type) {
+	// var rect = canvas.getBoundingClientRect();
+	// var mouseX = event.clientX - rect.left;
+	// var mouseY = event.clientY - rect.top;
+	// var clickedPoint = getPointGrid(mouseX, mouseY);
+	var coordinates = approximateCoordinates(gridSize, getMousePos(event));
+	var clickedPoint = new Point(coordinates.x,coordinates.y);
 
 	let gate = null;
 	switch (gate_type) {
@@ -73,20 +76,20 @@ function handleClickGate(event) {
 	}
 
 	gate.inputs.forEach((pin) => {
-		let wire = getConnectedComponent(pin.point);
+		let wire = Circuit.getConnectedComponent(pin.point);
 		if (wire) {
 			wire.addOutput(pin);
 			pin.addConnection(wire);
 		}
 	});
 	gate.outputs.forEach((pin) => {
-		let wire = getConnectedComponent(pin.point);
+		let wire = Circuit.getConnectedComponent(pin.point);
 		if (wire) {
 			wire.addInput(pin);
 			pin.addConnection(wire);
 		}
 	});
 
-	Components.push(gate);
-	repaintCanvas();
+	Circuit.Components.push(gate);
+	Circuit.repaintCircuit();
 }
