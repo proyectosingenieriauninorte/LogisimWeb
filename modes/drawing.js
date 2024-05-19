@@ -9,7 +9,7 @@ import {
     drawLine
 } from '../utils/drawer.js'
 import { gridSize} from "../config/config.js"
-import { ctxFront,canvasFront } from "../src/canvasSetup.js"
+import { ctxFront,canvasFront } from "../src/canvas/canvasSetup.js"
 import Point from "../components/Point.js"
 
 

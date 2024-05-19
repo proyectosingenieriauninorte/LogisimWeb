@@ -1,4 +1,4 @@
-import { changeMode } from "../utils/util.js";
+import { changeMode } from "../src/circuit/changemode.js";
 
 export class Button {
     constructor(id, mode) {

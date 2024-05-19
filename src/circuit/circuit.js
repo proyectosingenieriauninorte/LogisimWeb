@@ -1,12 +1,12 @@
 //Import clase Line
-import Wire from '../components/Wire.js'
-import Line from '../components/Line.js'
-import Pin from '../components/Pin.js'
-import Point from '../components/Point.js'
-import And from '../components/And.js'
+import Wire from '../../components/Wire.js'
+import Line from '../../components/Line.js'
+import Pin from '../../components/Pin.js'
+import Point from '../../components/Point.js'
+import And from '../../components/And.js'
 
-import * as drawer from "../utils/drawer.js"
-import { ctxFront, ctxBack , clearCanvas,initCanvas} from './canvasSetup.js'
+import * as drawer from "../../utils/drawer.js"
+import { ctxFront, ctxBack , clearCanvas,initCanvas} from '../canvas/canvasSetup.js'
 
 
 // Coleccion de componentes y cables

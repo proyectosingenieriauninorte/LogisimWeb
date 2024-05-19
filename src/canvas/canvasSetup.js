@@ -1,4 +1,4 @@
-import { gridSize, defaultPointSize } from "../config/config.js"
+import { gridSize, defaultPointSize } from "../../config/config.js"
 
 //Canvas delantero
 export var canvasFront = document.getElementById('canvasFront')
