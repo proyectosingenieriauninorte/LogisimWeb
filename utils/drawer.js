@@ -14,7 +14,7 @@ export function drawPin(pin,ctx) {
 	let value = pin.value;
 	let x = pin.point.x;
 	let y = pin.point.y;
-	let wd = 10 //ctx.measureText(value).width;
+	let wd =ctx.measureText(value).width;
 	let hg = 15;
 
 	switch (value) {
@@ -38,8 +38,8 @@ export function drawPin(pin,ctx) {
 	if (pin.type == "in") {
 		ctx.beginPath();
 		ctx.arc(
-			x * gridSize,
-			y * gridSize,
+			x ,
+			y ,
 			defaultPointSize * 8,
 			0,
 			2 * Math.PI
@@ -49,8 +49,8 @@ export function drawPin(pin,ctx) {
 		ctx.stroke();
 		ctx.closePath();
 
-		x = x * gridSize + defaultPointSize * 8 + 3;
-		y = y * gridSize + hg / 2 - 3;
+		x = x + 5
+		y = y + 5
 	} else if (pin.type == "out") {
 		ctx.beginPath();
 		ctx.arc(
@@ -65,7 +65,7 @@ export function drawPin(pin,ctx) {
 		ctx.closePath();
 
 		x = x-15
-		y = y+3
+		y = y+5
 	}
 
 	ctx.beginPath();
@@ -76,44 +76,44 @@ export function drawPin(pin,ctx) {
 }
 
 // Dibuja un objeto cualquiera
-export function draw(obj) {
-	if (obj instanceof Point) {
-		drawPoint(obj.x, obj.y);
-	} else if (obj instanceof Line) {
-		drawLine(obj);
-	} else if (obj instanceof Wire) {
-		let color = "";
-		let value = obj.getValue();
+// export function draw(obj) {
+// 	if (obj instanceof Point) {
+// 		drawPoint(obj.x, obj.y);
+// 	} else if (obj instanceof Line) {
+// 		drawLine(obj);
+// 	} else if (obj instanceof Wire) {
+// 		let color = "";
+// 		let value = obj.getValue();
 
-		switch (value) {
-			case "E":
-				color = "red";
-				break;
-			case "D":
-				color = "blue";
-				break;
-			case "0":
-				color = "#006400";
-				break;
-			case "1":
-				color = "#00d200";
-				break;
-			default:
-				color = "black";
-				break;
-		}
+// 		switch (value) {
+// 			case "E":
+// 				color = "red";
+// 				break;
+// 			case "D":
+// 				color = "blue";
+// 				break;
+// 			case "0":
+// 				color = "#006400";
+// 				break;
+// 			case "1":
+// 				color = "#00d200";
+// 				break;
+// 			default:
+// 				color = "black";
+// 				break;
+// 		}
 
-		obj.lines.forEach((ln) => drawLine(ln, color));
-	} else if (obj instanceof Pin) {
-		drawPin(obj);
-	} else if (obj instanceof And) {
-		obj.inputs.forEach((pin) => draw(pin));
-		obj.outputs.forEach((pin) => draw(pin));
-	} else {
-		console.error("No se pudo pintar el objeto");
-		console.error("Objeto: ", obj);
-	}
-}
+// 		obj.lines.forEach((ln) => drawLine(ln, color));
+// 	} else if (obj instanceof Pin) {
+// 		drawPin(obj);
+// 	} else if (obj instanceof And) {
+// 		obj.inputs.forEach((pin) => draw(pin));
+// 		obj.outputs.forEach((pin) => draw(pin));
+// 	} else {
+// 		console.error("No se pudo pintar el objeto");
+// 		console.error("Objeto: ", obj);
+// 	}
+// }
 
 export function drawLine(ctx, edges, color='black') {
     // Set the line color and width
