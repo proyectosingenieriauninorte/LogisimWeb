@@ -1,5 +1,3 @@
-import Point from "./Point.js";
-
 class Line {
 	constructor(pointA,pointinter,pointB) {
 		this.lineWidth = 4; // Grosor de la linea
