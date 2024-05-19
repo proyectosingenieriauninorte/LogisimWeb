@@ -17,12 +17,13 @@ export function getMousePos(event) {
 
 var temp_const = "1";
 export function changeMode(mode) {
-    document.getElementById('btn_wire').classList.remove('select')
-    document.getElementById('btn_hand').classList.remove('select')
-    document.getElementById('btn_delete').classList.remove('select')
-    document.getElementById('btn_const0').classList.remove('select')
-    document.getElementById('btn_const1').classList.remove('select')
-    document.getElementById('btn_probe').classList.remove('select')
+    document.getElementById('btn_wire').classList.remove('select');
+    document.getElementById('btn_hand').classList.remove('select');
+    document.getElementById('btn_delete').classList.remove('select');
+    document.getElementById('btn_const0').classList.remove('select');
+    document.getElementById('btn_const1').classList.remove('select');
+    document.getElementById('btn_probe').classList.remove('select');
+    document.getElementById('btn_and').classList.remove('select');
 
 
     switch (mode) {
@@ -81,15 +82,15 @@ export function changeMode(mode) {
             canvasContainer.style.cursor = "crosshair"; // Cambia el cursor
             temp_const = "-1";
 
-            // Eventos del click para el modo constante
-            canvas.addEventListener("click", handleClickPin);
+            // Eventos del click para el modo probe
+            setMode("probeMode")
             break;
         case "and":
             btn_and.classList.add("select");
             canvasContainer.style.cursor = "crosshair"; // Cambia el cursor
-            gate_type = "and";
+            //gate_type = "and";
 
-            canvas.addEventListener("click", handleClickGate);
+            setMode("andMode")
             break;
     }
 }
