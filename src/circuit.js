@@ -5,7 +5,6 @@ import Pin from '../components/Pin.js'
 import Point from '../components/Point.js'
 import And from '../components/And.js'
 
-import { getPointGrid } from "../utils/util.js"
 import * as drawer from "../utils/drawer.js"
 import { ctxFront, ctxBack , clearCanvas,initCanvas} from './canvasSetup.js'
 
@@ -146,8 +145,8 @@ class circuit {
 		} else if (obj instanceof Pin) {
 			drawer.drawPin(obj,ctxFront);
 		} else if (obj instanceof And) {
-			obj.inputs.forEach((pin) => draw(pin,ctxBack));
-			obj.outputs.forEach((pin) => draw(pin,ctxBack));
+			obj.inputs.forEach((pin) => drawer.drawPin(pin,ctxBack));
+			obj.outputs.forEach((pin) => drawer.drawPin(pin,ctxBack));
 		} else {
 			console.error("No se pudo pintar el objeto");
 			console.error("Objeto: ", obj);
