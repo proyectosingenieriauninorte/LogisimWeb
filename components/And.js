@@ -11,12 +11,12 @@ class And extends Component {
 		// Inicializa las entradas
 		let pt = null;
 		for (let i = 0; i < entries; i++) {
-			pt = new Point(x - 1, y + i * 2 - 1);
+			pt = new Point(x - 20, y + i * 40-20);
 			this.inputs.push(new Pin(pt, "in"));
 		}
 
 		// Inicializa la salida
-		pt = new Point(x + 1, y);
+		pt = new Point(x + 17, y);
 		this.outputs.push(new Pin(pt, "out", "D"));
 	}
 

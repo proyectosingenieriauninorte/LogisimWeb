@@ -1,3 +1,4 @@
+html,
 body {
   margin: 0;
   padding: 0 10px;
@@ -74,4 +75,14 @@ body {
   height: 90vh;
   border: 2px solid black; /* Agrega el borde al contenedor */
   overflow: hidden; /* Habilita el desplazamiento */
+  position: relative;
+}
+
+canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+#canvasFront {
+  background-color: transparent; /* Establece el fondo transparente para el segundo canvas */
 }
