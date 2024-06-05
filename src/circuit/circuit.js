@@ -150,8 +150,7 @@ class circuit {
 		} else if (obj instanceof Pin) {
 			drawer.drawPin(obj, ctxBack);
 		} else if (obj instanceof And) {
-			obj.inputs.forEach((pin) => drawer.drawPin(pin, ctxBack));
-			obj.outputs.forEach((pin) => drawer.drawPin(pin, ctxBack));
+			drawer.drawGate(obj, ctxBack);
 		} else {
 			console.error('No se pudo pintar el objeto');
 			console.error('Objeto: ', obj);

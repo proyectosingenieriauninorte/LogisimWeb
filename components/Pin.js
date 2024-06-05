@@ -1,5 +1,6 @@
 class Pin {
-	constructor(point, type, value = "D") {
+	constructor(point, type, value = "D", parent = null) {
+		this.parent = parent;
 		this.point = point;
 		this.value = value;
 		this.type = type;
@@ -30,6 +31,8 @@ class Pin {
 
 				return valueR;
 			}, "D");
+
+			if (this.parent) this.parent.updateValue();
 		}
 	}
 
