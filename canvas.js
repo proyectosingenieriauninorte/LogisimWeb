@@ -1,7 +1,7 @@
 // Importar Funciones y clases
 import { Button } from "./components/buttons.js"
 import { changeMode } from "./src/circuit/changemode.js";
-import {resizeCanvas, clearCanvas} from "./src/canvas/canvasSetup.js"
+import {resizeCanvas, clearCanvas, canvasContainer} from "./src/canvas/canvasSetup.js"
 import circuit from "./src/circuit/circuit.js";
 
 
@@ -57,6 +57,7 @@ const btn_probe = new Button("btn_probe","probe");
 //And
 const btn_and = new  Button("btn_and","and");
 
+canvasContainer.addEventListener("mousemove",() => {})
 
 /* Inicialización */
 resizeCanvas();
