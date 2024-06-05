@@ -31,7 +31,7 @@ export function resizeCanvas() {
     canvasFront.width = containerWidth * 2
     canvasFront.height = containerHeight * 2
     initCanvas(ctxBack,canvasBack)
-    initCanvas(ctxFront,canvasFront)
+    // initCanvas(ctxFront,canvasFront)
 }
 
 
@@ -42,6 +42,6 @@ export function clearCanvas() {
 
     // Llamar a la función para crear los nodos del canvas al cargar la página
     initCanvas(ctxBack)
-    initCanvas(ctxFront)
+    // initCanvas(ctxFront)
 }
 

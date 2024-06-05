@@ -8,7 +8,7 @@ import { gridSize } from "../config/config.js"
 // Esta función te va a devolver un indice X y Y del punto mas cercano al mouse en el canvas cuando haces click, para convertirlo en
 // cordenadas de el punto en el grid solo multiplica por 20 la cordenada que te devuelva la función y en ese pixel se encontrara el punto
 export function getMousePos(event) {
-    var rect = canvasFront.getBoundingClientRect()
+    var rect = canvasBack.getBoundingClientRect()
     return {
         x: Math.round(event.clientX - rect.left),
         y: Math.round(event.clientY - rect.top)
