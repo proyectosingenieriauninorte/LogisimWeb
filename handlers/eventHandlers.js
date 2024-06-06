@@ -50,4 +50,10 @@ export function setMode(mode) {
     if (mode === 'andMode') {
         addEventListenerWithGate('click',"and");
     }
+    if (mode === 'orMode') {
+        addEventListenerWithGate('click',"or");
+    }
+    if (mode === 'notMode') {
+        addEventListenerWithGate('click',"not");
+    }
 }

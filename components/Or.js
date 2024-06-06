@@ -2,7 +2,7 @@ import Point from './Point.js';
 import Gate from './Gate.js';
 import Pin from './Pin.js';
 
-class And extends Gate {
+class Or extends Gate {
 	constructor(point, entries = 2) {
 		super(point);
 		let x = point.x;
@@ -28,10 +28,10 @@ class And extends Gate {
 				if (prevValue == 'E' || current.getValue() == 'E') return 'E';
 				if (current.getValue() == 'D') return prevValue;
 				if (prevValue == 'D') return current.getValue();
-				return (prevValue & current.getValue()).toString();
+				return (prevValue | current.getValue()).toString();
 			}, 'D')
 		);
 	}
 }
 
-export default And;
+export default Or;

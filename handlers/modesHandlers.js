@@ -2,10 +2,12 @@ import Pin from '../components/Pin.js';
 import Point from '../components/Point.js';
 import Wire from '../components/Wire.js';
 import And from '../components/And.js';
+import Or from '../components/Or.js';
 import { getMousePos } from '../utils/util.js';
 import Circuit from '../canvas.js';
 import { approximateCoordinates } from '../utils/drawer.js';
 import { gridSize } from '../config/config.js';
+import Not from '../components/Not.js';
 
 /* Modo para eliminar componentes */
 export function handleClickDelete(event) {
@@ -74,6 +76,12 @@ export function handleClickGate(event, gate_type) {
 	switch (gate_type) {
 		case 'and':
 			gate = new And(clickedPoint);
+			break;
+		case 'or':
+			gate = new Or(clickedPoint);
+			break;
+		case 'not':
+			gate = new Not(clickedPoint);
 			break;
 	}
 

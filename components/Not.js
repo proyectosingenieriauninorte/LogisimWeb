@@ -2,18 +2,16 @@ import Point from './Point.js';
 import Gate from './Gate.js';
 import Pin from './Pin.js';
 
-class And extends Gate {
-	constructor(point, entries = 2) {
+class Not extends Gate {
+	constructor(point) {
 		super(point);
 		let x = point.x;
 		let y = point.y;
 
 		// Inicializa las entradas
 		let pt = null;
-		for (let i = 0; i < entries; i++) {
-			pt = new Point(x - 20, y + i * 40 - 20);
-			this.inputs.push(new Pin(pt, 'in', 'D', this));
-		}
+		pt = new Point(x - 20, y);
+		this.inputs.push(new Pin(pt, 'in', 'D', this));
 
 		// Inicializa la salida
 		pt = new Point(x + 20, y);
@@ -27,11 +25,13 @@ class And extends Gate {
 			this.inputs.reduce((prevValue, current) => {
 				if (prevValue == 'E' || current.getValue() == 'E') return 'E';
 				if (current.getValue() == 'D') return prevValue;
-				if (prevValue == 'D') return current.getValue();
-				return (prevValue & current.getValue()).toString();
+				return current.getValue()
+					.split('')
+					.map((lt) => (lt == '0' ? '1' : '0'))
+					.join('');
 			}, 'D')
 		);
 	}
 }
 
-export default And;
+export default Not;
