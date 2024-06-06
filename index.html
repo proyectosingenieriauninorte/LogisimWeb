@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Logisim Web</title>
+    <link rel="stylesheet" href="./styles/styles.css">
+  </head>
+  <body>
+    <div class="menu">
+      <div class="containerMode">
+        <span id="btn_mouse" class="btn_mode"><img src="./images/mouse.png"></span>
+        <span id="btn_wire" class="btn_mode"><img src="./images/wires.png"></span>
+        <span id="btn_hand" class="btn_mode"><img src="./images/palm.png"></span>
+        <span id="btn_delete" class="btn_mode"><img src="./images/cross.png"></span>
+        <span id="btn_const0" class="btn_mode">0</span>
+        <span id="btn_const1" class="btn_mode">1</span>
+        <span id="btn_probe" class="btn_mode"><img src="./images/circle.png"></span>
+        <span id="btn_and" class="btn_mode"><img src="./images/AND.png"></span>
+        <span id="btn_or" class="btn_mode"><img src="./images/OR.png"></span>
+        <span id="btn_not" class="btn_mode"><img src="./images/NOT.png"></span>
+      </div>
+      <div class="containerOptions">
+        <span id="btn_reload" class="btn_opt" title="Recargar simulacion"><img src="./images/reload.png"></span>
+        <span id="btn_clear" class="btn_opt" title="Eliminar todo"><img src="./images/trash.png"></span>
+      </div>
+    </div>
+    <div id="canvasContainer">
+      <canvas id="canvasBack"></canvas>
+      <canvas id="canvasFront"></canvas>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" id="closeModalBtn">&times;</span>
+            <h2>Cambiar Valor de la Constante</h2>
+            <input type="number" id="constantValue" class="styled-input" placeholder="Ingrese el valor">
+            <button id="saveBtn" class="styled-btn">Guardar</button>
+    </div>
+    </div>
+    </div>
+    <script type="module" src="./canvas.js"></script>
+    <script type="module" src="./modal.js"></script>
+  </body>
+</html>
