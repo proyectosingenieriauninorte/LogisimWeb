@@ -1,7 +1,7 @@
 // Importar Funciones y clases
 import { Button } from "./components/buttons.js"
 import { changeMode } from "./src/circuit/changemode.js";
-import {resizeCanvas, clearCanvas} from "./src/canvas/canvasSetup.js"
+import { resizeCanvas, clearCanvas } from "./src/canvas/canvasSetup.js"
 import circuit from "./src/circuit/circuit.js";
 
 
@@ -14,7 +14,7 @@ resizeCanvas()
 changeMode('wire')
 
 // Llamar a la función para ajustar el tamaño del canvas cuando la ventana se redimensione
-window.addEventListener('resize',resizeCanvas)
+window.addEventListener('resize', resizeCanvas)
 
 // Obtener el botón de limpiar
 const clearButton = document.getElementById('btn_clear')
@@ -43,24 +43,37 @@ const btn_hand = new Button('btn_hand', 'hand');
 const btn_reload = new Button("btn_reload", circuit.reloadWires);
 
 //borrar componentes
-const btn_delete = new Button("btn_delete","delete");
+const btn_delete = new Button("btn_delete", "delete");
 
 //Cosntante 0
-const btn_const0 =  new Button("btn_const0","const0");
+const btn_const0 = new Button("btn_const0", "const0");
 
 //Contante 1
-const btn_const1 = new Button ("btn_const1","const1");
+const btn_const1 = new Button("btn_const1", "const1");
 
 //Probe
-const btn_probe = new Button("btn_probe","probe");
+const btn_probe = new Button("btn_probe", "probe");
 
 //And
-const btn_and = new  Button("btn_and","and");
+const btn_and = new Button("btn_and", "and");
 
 
 /* Inicialización */
 resizeCanvas();
 changeMode("wire");
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //Exportar circuito 
 export default Circuit;
