@@ -106,9 +106,26 @@ class circuit {
 		}
 
 		if (comp) return comp;
-
 		for (let cp of this.Wires) {
 			comp = cp.isConnectedTo(point);
+			if (comp) break;
+		}
+
+		return comp;
+	}
+
+	getConnectedComponentWithNotParent(point, parent) {
+		let comp = null;
+		for (let cp of this.Components) {
+			if (cp == parent) continue;
+			comp = cp.isConnectedTo(point);
+			if (comp) break;
+		}
+
+		if (comp) return comp;
+		for (let cp of this.Wires) {
+			if (cp == parent) continue;
+			comp = cp.isConnectedTo(point);	
 			if (comp) break;
 		}
 
@@ -162,6 +179,10 @@ class circuit {
 		this.Wires = [];
 		this.Components = [];
 		//clearCanvas()
+	}
+
+	getComponent(component){
+		return this.Components.find((comp) => comp == component);
 	}
 
 

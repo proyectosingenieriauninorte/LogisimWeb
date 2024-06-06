@@ -1,35 +1,18 @@
 import {
     eventHandlers,
-    removeEventListenersWithParam,
     addEventListenerWithParam,
     addEventListenerWithDelete,
-    removeEventListenersWithDelete,
     addEventListenerWithGate,
-    removeEventListenersWithGate,
     addEventListenerWithMouse,
 } from "../modes/modes.js";
 export function setMode(mode) {
+    //console.log('anTES', getAllEventListeners());
     const canvasContainer = document.getElementById('canvasContainer');
 
-    // Remove all generic event listeners
-    Object.keys(eventHandlers).forEach(key => {
-        Object.entries(eventHandlers[key].add).forEach(([event, handler]) => {
-            canvasContainer.removeEventListener(event, handler);
-        });
-        Object.entries(eventHandlers[key].remove).forEach(([event, handler]) => {
-            if (handler) {
-                canvasContainer.removeEventListener(event, handler);
-            }
-        });
-    });
 
-    // Remove all handleClickPin listeners with parameters
-    removeEventListenersWithParam();
-    // Remove all handleClickDelete listeners
-    removeEventListenersWithDelete();
-    // Remove all handleClickGate listeners
-    removeEventListenersWithGate();
-
+    // Remove all Listener canvas container
+    removeAllEventListenersFromElement(canvasContainer)
+    
     // Add new event listeners for the selected mode
     Object.entries(eventHandlers[mode].add).forEach(([event, handler]) => {
         if (handler) {
@@ -39,11 +22,11 @@ export function setMode(mode) {
 
     // Add specific handleClickPin listener with parameter if needed
     if (mode === 'constan01Mode') {
-        addEventListenerWithParam('click', "1");
+        addEventListenerWithParam('mousemove', "1");
     } else if (mode === 'constan00Mode') {
-        addEventListenerWithParam('click', "0");
+        addEventListenerWithParam('mousemove', "0");
     } else if (mode === 'probeMode') {
-        addEventListenerWithParam('click', "-1");
+        addEventListenerWithParam('mousemove',"-1");
     }
     // Add handleClickDelete listener if needed
     if (mode === 'deleteMode') {
@@ -51,6 +34,7 @@ export function setMode(mode) {
     }
     // Add handleClickGate listener if needed
     if (mode === 'andMode') {
+        addEventListenerWithGate('mousemove',"and");
         addEventListenerWithGate('click', "and");
     }
     if (mode === 'orMode') {
@@ -62,4 +46,5 @@ export function setMode(mode) {
     if (mode === 'mouseMode') {
         addEventListenerWithMouse();
     }
+    
 }

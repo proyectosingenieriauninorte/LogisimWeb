@@ -46,52 +46,52 @@ export function changeMode(mode) {
         // 	btn_const.classList.add("select");
         // 	canvasContainer.style.cursor = "crosshair"; // Cambia el cursor
 
-		// 	// Eventos del click para el modo constante
-		// 	canvas.addEventListener("click", handleClickPin);
-		// 	break;
-		case 'const0':
-			console.log('Constante 0');
-			btn_const0.classList.add('select');
-			canvasContainer.style.cursor = 'crosshair'; // Cambia el cursor
+        // 	// Eventos del click para el modo constante
+        // 	canvas.addEventListener("click", handleClickPin);
+        // 	break;
+        case 'const0':
+            console.log('Constante 0');
+            btn_const0.classList.add('select');
+            canvasContainer.style.cursor = 'crosshair'; // Cambia el cursor
 
-			//setea el modo con sus eventos
-			setMode('constan00Mode');
+            //setea el modo con sus eventos
+            setMode('constan00Mode');
 
-			break;
-		case 'const1':
-			console.log('Constante 1');
-			btn_const1.classList.add('select');
-			canvasContainer.style.cursor = 'crosshair'; // Cambia el cursor
+            break;
+        case 'const1':
+            console.log('Constante 1');
+            btn_const1.classList.add('select');
+            canvasContainer.style.cursor = 'crosshair'; // Cambia el cursor
 
-			//setea el modo con sus eventos
-			setMode('constan01Mode');
+            //setea el modo con sus eventos
+            setMode('constan01Mode');
 
-			break;
-		case 'probe':
-			btn_probe.classList.add('select');
-			canvasContainer.style.cursor = 'crosshair'; // Cambia el cursor
+            break;
+        case 'probe':
+            btn_probe.classList.add('select');
+            canvasContainer.style.cursor = 'crosshair'; // Cambia el cursor
 
-			// Eventos del click para el modo probe
-			setMode('probeMode');
-			break;
-		case 'and':
-			btn_and.classList.add('select');
-			canvasContainer.style.cursor = 'crosshair'; // Cambia el cursor
-			//gate_type = "and";
+            // Eventos del click para el modo probe
+            setMode('probeMode');
+            break;
+        case 'and':
+            btn_and.classList.add('select');
+            canvasContainer.style.cursor = 'crosshair'; // Cambia el cursor
+            //gate_type = "and";
 
-			setMode('andMode');
-			break;
-		case 'or':
-			btn_or.classList.add('select');
-			canvasContainer.style.cursor = 'crosshair';
+            setMode('andMode');
+            break;
+        case 'or':
+            btn_or.classList.add('select');
+            canvasContainer.style.cursor = 'crosshair';
 
-			setMode('orMode');
-			break;
-		case 'not':
-			btn_not.classList.add('select');
-			canvasContainer.style.cursor = 'crosshair';
+            setMode('orMode');
+            break;
+        case 'not':
+            btn_not.classList.add('select');
+            canvasContainer.style.cursor = 'crosshair';
 
-			setMode('notMode');
-			break;
-	}
+            setMode('notMode');
+            break;
+    }
 }
