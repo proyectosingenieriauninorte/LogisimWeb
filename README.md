@@ -1,5 +1,8 @@
 # Logisim Web
 
+
+[video](assets/video.mp4)
+
 ## Resumen y Justificación de la Herramienta
 
 Logisim Web es una herramienta educativa diseñada para el diseño y la simulación de circuitos digitales, accesible directamente desde el navegador web. Inspirada en la aplicación Logisim original, esta versión web proporciona una plataforma accesible y fácil de usar, especialmente dirigida a estudiantes y profesionales de ciencias de la computación. La justificación de esta herramienta radica en la necesidad de una solución que permita a los usuarios aprender y experimentar con circuitos digitales sin requerir software especializado, facilitando el acceso y el aprendizaje en cualquier entorno con conexión a internet.
@@ -37,7 +40,6 @@ Estudiante 1: Elkin Santis, Responsable de la implementación del frontend y dis
 Estudiante 2: Edinson Noriega, Encargado de la lógica de simulación de circuitos y la integración de componentes.
 
 Estudiante 3: Luisangel Parra, Desarrollador de las funcionalidades de arrastrar y soltar, y optimización de la usabilidad.
-
 
 Estudiante 4: Luis LLerena, Responsable de la documentación, pruebas y aseguramiento de la calidad del software.
 
