@@ -32,10 +32,10 @@ Logisim Web es una herramienta educativa diseñada para el diseño y la simulaci
 
 ## Listado de Estudiantes
 
-Estudiante 1: Luis Llerena, Responsable de la implementación del frontend y diseño de la interfaz de usuario.
+Estudiante 1: Elkin Santis, Responsable de la implementación del frontend y diseño de la interfaz de usuario.
 Estudiante 2: Edinson Noriega, Encargado de la lógica de simulación de circuitos y la integración de componentes.
 Estudiante 3: Luisangel Parra, Desarrollador de las funcionalidades de arrastrar y soltar, y optimización de la usabilidad.
-Estudiante 4: Elkin Santis, Responsable de la documentación, pruebas y aseguramiento de la calidad del software.
+Estudiante 4: Luis LLerena, Responsable de la documentación, pruebas y aseguramiento de la calidad del software.
 
 ---
 
