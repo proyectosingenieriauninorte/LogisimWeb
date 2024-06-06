@@ -62,6 +62,7 @@ export function changeMode(mode) {
 
             break;
         case "probe":
+            console.log("Probe")
             btn_probe.classList.add("select");
             canvasContainer.style.cursor = "crosshair"; // Cambia el cursor
             
@@ -70,9 +71,11 @@ export function changeMode(mode) {
             setMode("probeMode")
             break;
         case "and":
+            console.log("Puerta AND")
             btn_and.classList.add("select");
             canvasContainer.style.cursor = "crosshair"; // Cambia el cursor
             //gate_type = "and";
+
 
             setMode("andMode")
             break;
