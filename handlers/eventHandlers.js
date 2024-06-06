@@ -36,11 +36,11 @@ export function setMode(mode) {
 
     // Add specific handleClickPin listener with parameter if needed
     if (mode === 'constan01Mode') {
-        addEventListenerWithParam('click', "1");
+        addEventListenerWithParam('mousemove','click', "1");
     } else if (mode === 'constan00Mode') {
-        addEventListenerWithParam('click', "0");
+        addEventListenerWithParam('mousemove','click', "0");
     } else if (mode === 'probeMode') {
-        addEventListenerWithParam('click',"-1");
+        addEventListenerWithParam('mousemove','click', "-1");
     }
     // Add handleClickDelete listener if needed
     if (mode === 'deleteMode') {
