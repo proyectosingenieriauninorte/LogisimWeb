@@ -36,7 +36,7 @@ export function drawPin(pin, ctx, etq = true) {
 	let value = pin.value;
 	let x = pin.point.x;
 	let y = pin.point.y;
-	let wd = ctx.measureText(value).width;
+	let wd = value.length*9;
 	let hg = 15;
 
 	switch (value) {
@@ -65,14 +65,11 @@ export function drawPin(pin, ctx, etq = true) {
 		ctx.stroke();
 		ctx.closePath();
 
-		x = x + wd + 13;
-		y = y + 5;
-
 		if (etq) {
 			ctx.beginPath();
 			ctx.fillStyle = color;
 			ctx.font = 'bold ' + hg + 'px Arial';
-			ctx.fillText(value, x, y);
+			ctx.fillText(value, x + 8, y + 5);
 			ctx.closePath();
 		}
 	} else if (pin.type == 'out') {
@@ -82,14 +79,11 @@ export function drawPin(pin, ctx, etq = true) {
 		ctx.fill();
 		ctx.closePath();
 
-		x = x - wd - 15;
-		y = y + 5;
-
 		if (etq) {
 			ctx.beginPath();
 			ctx.fillStyle = color;
 			ctx.font = 'bold ' + hg + 'px Arial';
-			ctx.fillText(value, x - wd + 8, y);
+			ctx.fillText(value, x - wd - 5, y + 5);
 			ctx.closePath();
 		}
 	}
