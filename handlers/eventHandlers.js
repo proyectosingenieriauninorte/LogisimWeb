@@ -1,32 +1,15 @@
 import { eventHandlers,
-    removeEventListenersWithParam,
     addEventListenerWithParam,
     addEventListenerWithDelete,
-    removeEventListenersWithDelete,
-    addEventListenerWithGate,
-    removeEventListenersWithGate } from "../modes/modes.js";
+    addEventListenerWithGate } from "../modes/modes.js";
 export function setMode(mode) {
+    //console.log('anTES', getAllEventListeners());
     const canvasContainer = document.getElementById('canvasContainer');
 
-    // Remove all generic event listeners
-    Object.keys(eventHandlers).forEach(key => {
-        Object.entries(eventHandlers[key].add).forEach(([event, handler]) => {
-            canvasContainer.removeEventListener(event, handler);
-        });
-        Object.entries(eventHandlers[key].remove).forEach(([event, handler]) => {
-            if (handler) {
-                canvasContainer.removeEventListener(event, handler);
-            }
-        });
-    });
 
-    // Remove all handleClickPin listeners with parameters
-    removeEventListenersWithParam();
-    // Remove all handleClickDelete listeners
-    removeEventListenersWithDelete();
-    // Remove all handleClickGate listeners
-    removeEventListenersWithGate();
-
+    // Remove all Listener canvas container
+    removeAllEventListenersFromElement(canvasContainer)
+    
     // Add new event listeners for the selected mode
     Object.entries(eventHandlers[mode].add).forEach(([event, handler]) => {
         if (handler) {
@@ -50,4 +33,5 @@ export function setMode(mode) {
     if (mode === 'andMode') {
         addEventListenerWithGate('mousemove',"and");
     }
+    
 }
