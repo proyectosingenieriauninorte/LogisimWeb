@@ -1,5 +1,5 @@
 
-![image](images/logo.png)
+![image](images/logo2.png)
 
 # Logisim Web: Plataforma Educativa para el Diseño de Circuitos Digitales
 
