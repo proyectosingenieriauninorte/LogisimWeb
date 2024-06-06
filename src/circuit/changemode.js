@@ -11,6 +11,12 @@ export function changeMode(mode) {
 
 
     switch (mode) {
+        case 'mouse':
+            console.log('Modo mouse')
+            document.getElementById('btn_mouse').classList.add('select')    
+            canvasContainer.style.cursor = 'default'
+            setMode('mouseMode')
+            break
         case 'wire':
             console.log('Modo wire')
             document.getElementById('btn_wire').classList.add('select')

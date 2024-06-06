@@ -164,6 +164,7 @@ class circuit {
 		//clearCanvas()
 	}
 
+
 	repaintCircuit() {
 		console.log('WIRES:', this.Wires);
 		console.log('COMPONENTS', this.Components);
