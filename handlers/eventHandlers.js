@@ -38,10 +38,10 @@ export function setMode(mode) {
         addEventListenerWithGate('click', "and");
     }
     if (mode === 'orMode') {
-        addEventListenerWithGate('click',"or");
+        addEventListenerWithGate('mousemove',"or");
     }
     if (mode === 'notMode') {
-        addEventListenerWithGate('click',"not");
+        addEventListenerWithGate('mousemove',"not");
     }
     if (mode === 'mouseMode') {
         addEventListenerWithMouse();
