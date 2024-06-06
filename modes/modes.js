@@ -41,6 +41,7 @@ export const eventHandlers = {
             mouseup: endDragging,
             mousemove: dragCanvas,
             mousedown: startDrawing,
+            mousedown: handleClickGate,
             mouseup: endDrawing,
             mousemove: drawCanvas,
             click: null // Se eliminarán los listeners específicos más adelante
@@ -53,6 +54,7 @@ export const eventHandlers = {
             mouseup: endDragging,
             mousemove: dragCanvas,
             mousedown: startDrawing,
+            mousedown: handleClickGate,
             mouseup: endDrawing,
             mousemove: drawCanvas,
             click: null // Se eliminarán los listeners específicos más adelante
@@ -65,6 +67,8 @@ export const eventHandlers = {
             mouseup: endDragging,
             mousemove: dragCanvas,
             mousedown: startDrawing,
+            mousedown: handleClickGate,
+            mousedown: handleClickPin,
             mouseup: endDrawing,
             mousemove: drawCanvas,
             click: null // Se eliminarán los listeners específicos más adelante
@@ -77,6 +81,7 @@ export const eventHandlers = {
             mouseup: endDragging,
             mousemove: dragCanvas,
             mousedown: startDrawing,
+            mousedown: handleClickGate,
             mouseup: endDrawing,
             mousemove: drawCanvas,
             click: null // Se eliminarán los listeners específicos más adelante
@@ -89,6 +94,7 @@ export const eventHandlers = {
             mouseup: endDragging,
             mousemove: dragCanvas,
             mousedown: startDrawing,
+            mousedown: handleClickPin,
             mouseup: endDrawing,
             mousemove: drawCanvas,
             click: null // Se eliminarán los listeners específicos más adelante
@@ -107,23 +113,10 @@ export function addEventListenerWithParam(eventType, param) {
     canvasContainer.addEventListener(eventType, wrappedHandler);
 }
 
-export function removeEventListenersWithParam() {
-    handleClickPinListeners.forEach(({ eventType, wrappedHandler }) => {
-        canvasContainer.removeEventListener(eventType, wrappedHandler);
-    });
-    handleClickPinListeners = [];
-}
 
 export function addEventListenerWithDelete(eventType) {
     handleClickDeleteListeners.push({ eventType, handleClickDelete });
     canvasContainer.addEventListener(eventType, handleClickDelete);
-}
-
-export function removeEventListenersWithDelete() {
-    handleClickDeleteListeners.forEach(({ eventType }) => {
-        canvasContainer.removeEventListener(eventType, handleClickDelete);
-    });
-    handleClickDeleteListeners = [];
 }
 
 export function addEventListenerWithGate(eventType, param) {
@@ -132,10 +125,4 @@ export function addEventListenerWithGate(eventType, param) {
     canvasContainer.addEventListener(eventType, wrappedHandler);
 }
 
-export function removeEventListenersWithGate() {
-    handleClickGateListeners.forEach(({ eventType, wrappedHandler }) => {
-        canvasContainer.removeEventListener(eventType, wrappedHandler);
-    });
-    handleClickGateListeners = [];
-}
 
