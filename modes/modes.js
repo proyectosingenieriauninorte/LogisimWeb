@@ -125,14 +125,16 @@ export function removeEventListenersWithDelete() {
     });
     handleClickDeleteListeners = [];
 }
-export function addEventListenerWithGate(eventType,param){
+
+export function addEventListenerWithGate(eventType, param) {
     const wrappedHandler = (event) => handleClickGate(event, param);
-    handleClickGateListeners.push({eventType,wrappedHandler});
-    canvasContainer.addEventListener(eventType,wrappedHandler);
+    handleClickGateListeners.push({ eventType, wrappedHandler });
+    canvasContainer.addEventListener(eventType, wrappedHandler);
 }
-export function removeEventListenersWithGate(){
-    handleClickGateListeners.forEach(({eventType,wrappedHandler})=>{
-        canvasContainer.removeEventListener(eventType,wrappedHandler);
+
+export function removeEventListenersWithGate() {
+    handleClickGateListeners.forEach(({ eventType, wrappedHandler }) => {
+        canvasContainer.removeEventListener(eventType, wrappedHandler);
     });
     handleClickGateListeners = [];
 }
