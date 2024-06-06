@@ -3,7 +3,7 @@ import Wire from '../../components/Wire.js';
 import Line from '../../components/Line.js';
 import Pin from '../../components/Pin.js';
 import Point from '../../components/Point.js';
-import And from '../../components/And.js';
+import Gate from '../../components/Gate.js';
 
 import * as drawer from '../../utils/drawer.js';
 import {
@@ -166,7 +166,7 @@ class circuit {
 			);
 		} else if (obj instanceof Pin) {
 			drawer.drawPin(obj, ctxBack);
-		} else if (obj instanceof And) {
+		} else if (obj instanceof Gate) {
 			drawer.drawGate(obj, ctxBack);
 		} else {
 			console.error('No se pudo pintar el objeto');

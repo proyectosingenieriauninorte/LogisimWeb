@@ -1,4 +1,6 @@
 import And from '../components/And.js';
+import Or from '../components/Or.js';
+import Not from '../components/Not.js';
 import { gridSize, defaultPointSize } from '../config/config.js';
 
 export function drawPoint(x, y, ctx, color = 'black') {
@@ -91,6 +93,10 @@ export function drawGate(gate, ctx) {
 	let name = 'NONE';
 	if (gate instanceof And) {
 		name = 'AND';
+	} else if (gate instanceof Or) {
+		name = 'OR';
+	} else if (gate instanceof Not) {
+		name = 'NOT';
 	}
 
 	let hg = 13;
