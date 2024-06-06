@@ -28,7 +28,7 @@ class And extends Gate {
 				if (prevValue == 'E' || current.getValue() == 'E') return 'E';
 				if (current.getValue() == 'D') return prevValue;
 				if (prevValue == 'D') return current.getValue();
-				return (prevValue & current.getValue()).toString();
+				return (parseInt(prevValue, 2) & parseInt(current.getValue(), 2)).toString(2);
 			}, 'D')
 		);
 	}
