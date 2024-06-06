@@ -3,7 +3,7 @@ import {startDrawing,
 import {startDragging,
         endDragging,
         dragCanvas} from "../modes/dragging.js"
-import { handleClickPin,
+import { handleClickPin,handleNotClickPin,
         handleClickDelete,
         handleClickGate } from "../handlers/modesHandlers.js";
 
@@ -103,15 +103,23 @@ let handleClickPinListeners = [];
 let handleClickDeleteListeners = [];
 let handleClickGateListeners = [];
 
-export function addEventListenerWithParam(eventType, param) {
+export function addEventListenerWithParam(event1, event2, param) {
+    const NotwrappedHandler = (event) => handleNotClickPin(event, param);
     const wrappedHandler = (event) => handleClickPin(event, param);
-    handleClickPinListeners.push({ eventType, wrappedHandler });
-    canvasContainer.addEventListener(eventType, wrappedHandler);
+
+    // Almacenar los eventos y sus manejadores de manera consistente
+    handleClickPinListeners.push({ event: event1, handler: NotwrappedHandler });
+    handleClickPinListeners.push({ event: event2, handler: wrappedHandler });
+
+    canvasContainer.addEventListener(event1, NotwrappedHandler);
+    canvasContainer.addEventListener(event2, wrappedHandler);
 }
 
 export function removeEventListenersWithParam() {
-    handleClickPinListeners.forEach(({ eventType, wrappedHandler }) => {
-        canvasContainer.removeEventListener(eventType, wrappedHandler);
+    console.log(handleClickPinListeners);
+    handleClickPinListeners.forEach(({ event, handler }) => {
+        console.log(event, handler);
+        canvasContainer.removeEventListener(event, handler);
     });
     handleClickPinListeners = [];
 }
@@ -120,7 +128,7 @@ export function addEventListenerWithDelete(eventType) {
     handleClickDeleteListeners.push({ eventType, handleClickDelete });
     canvasContainer.addEventListener(eventType, handleClickDelete);
 }
-
+    	
 export function removeEventListenersWithDelete() {
     handleClickDeleteListeners.forEach(({ eventType }) => {
         canvasContainer.removeEventListener(eventType, handleClickDelete);
