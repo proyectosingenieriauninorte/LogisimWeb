@@ -82,7 +82,7 @@ export function drawPin(pin, ctx, etq = true) {
 		ctx.beginPath();
 		ctx.fillStyle = color;
 		ctx.font = 'bold ' + hg + 'px Arial';
-		ctx.fillText(value, x, y);
+		ctx.fillText(value, x - wd + 8, y);
 		ctx.closePath();
 	}
 }
