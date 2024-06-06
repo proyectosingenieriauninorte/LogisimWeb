@@ -197,8 +197,6 @@ export function addEventListenerWithMouse() {
         selectedPins = [];
         let clickedComponent = getRectAt(x, y, Components);
         let clickedPin = getPinAt(x, y, Components);
-        console.log('Components:', Components);
-        console.log('clickedPin:', clickedPin);
         if (clickedComponent && typeof clickedComponent != 'Wire') {
             if (!selectedComponents.includes(clickedComponent)) {
                 selectedComponents = [clickedComponent];
