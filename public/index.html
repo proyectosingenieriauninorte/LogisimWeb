@@ -26,7 +26,17 @@
     <div id="canvasContainer">
       <canvas id="canvasBack"></canvas>
       <canvas id="canvasFront"></canvas>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" id="closeModalBtn">&times;</span>
+            <h2>Cambiar Valor de la Constante</h2>
+            <input type="number" id="constantValue" class="styled-input" placeholder="Ingrese el valor">
+            <button id="saveBtn" class="styled-btn">Guardar</button>
+    </div>
+    </div>
     </div>
     <script type="module" src="../canvas.js"></script>
+    <script type="module" src="../modal.js"></script>
   </body>
 </html>
