@@ -64,14 +64,22 @@ En resumen, Logisim Web no solo proporciona una plataforma práctica para el apr
 
 ## Sugerencias de Funcionalidades Futuras
 
-- Mejorar la funcionalidad de arrastrar y soltar:
-  - Optimizar la experiencia de usuario permitiendo una interacción más intuitiva y fluida con los componentes del circuito.
-- Implementar más componentes de circuito:
-  - Incluir una variedad más amplia de componentes como multiplexores, decodificadores, flip-flops y contadores para ampliar las posibilidades de diseño y simulación.
-- Integración con herramientas educativas:
-  - Desarrollar funcionalidades que permitan la integración con plataformas educativas y LMS (Learning Management Systems) para facilitar la asignación y evaluación de tareas relacionadas con el diseño de circuitos digitales.
-- Simulación en tiempo real:
-  - Implementar simulación en tiempo real para visualizar el comportamiento del circuito a medida que se realizan modificaciones, proporcionando una retroalimentación inmediata al usuario.
+Para mejorar aún más la experiencia de usuario y ampliar las capacidades de Logisim Web, se proponen las siguientes funcionalidades futuras:
+
+- **Mejora de la Interacción Arrastrar y Soltar:**
+  - Optimizar la funcionalidad de arrastrar y soltar para ofrecer una experiencia más intuitiva y fluida al usuario al manipular los componentes del circuito. Esto incluirá mejoras en la precisión del posicionamiento, la capacidad de ajustar conexiones automáticamente y la incorporación de guías visuales para facilitar la construcción del circuito.
+
+- **Ampliación del Conjunto de Componentes:**
+  - Incorporar una amplia gama de nuevos componentes de circuito, que incluyen multiplexores, decodificadores, flip-flops y contadores, entre otros. Esto proporcionará a los usuarios una mayor variedad de elementos para sus diseños, permitiendo la creación de circuitos más complejos y la exploración de conceptos avanzados en electrónica digital.
+
+- **Integración con Plataformas Educativas:**
+  - Desarrollar funcionalidades que permitan la integración de Logisim Web con plataformas educativas y sistemas de gestión del aprendizaje (LMS), facilitando la asignación y evaluación de tareas relacionadas con el diseño de circuitos digitales. Esto permitirá a educadores y estudiantes utilizar la herramienta de manera más efectiva dentro de entornos educativos formales.
+
+- **Simulación en Tiempo Real:**
+  - Implementar una función de simulación en tiempo real, que permitirá a los usuarios visualizar el comportamiento del circuito de forma inmediata mientras realizan modificaciones. Esta característica proporcionará una retroalimentación instantánea sobre el funcionamiento del circuito, mejorando el proceso de diseño y aprendizaje.
+
+Estas mejoras están destinadas a enriquecer la experiencia de aprendizaje y la funcionalidad de Logisim Web, permitiendo a los usuarios explorar y experimentar con circuitos digitales de manera más eficiente y efectiva.
+
 
 ## Listado de Estudiantes
 
