@@ -1,6 +1,7 @@
 import { setMode } from '../../handlers/eventHandlers.js';
 
 export function changeMode(mode) {
+	document.getElementById('btn_mouse').classList.remove('select');
 	document.getElementById('btn_wire').classList.remove('select');
 	document.getElementById('btn_hand').classList.remove('select');
 	document.getElementById('btn_delete').classList.remove('select');
