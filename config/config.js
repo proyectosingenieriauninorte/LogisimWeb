@@ -58,7 +58,7 @@ export var defaultPointSize = 0.5;
             }
             listenersMap.delete(element); // Eliminar el elemento del mapa
         } else {
-            console.log(`No event listeners found for the specified element`);
+           return 1
         }
     };
 })();

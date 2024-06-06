@@ -191,8 +191,6 @@ export function addEventListenerWithMouse() {
         const rect = canvasBack.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
-        console.log('x:', x);
-        console.log('y:', y);
         selectedComponents = [];
         selectedPins = [];
         let clickedComponent = getRectAt(x, y, Components);
