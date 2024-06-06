@@ -61,6 +61,7 @@ class Pin {
 			connection.removeConnection(this)
 		);
 		this.connections = [];
+		this.updateValue();
 	}
 
 	isConnectedTo(point) {

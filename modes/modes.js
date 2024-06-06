@@ -179,7 +179,7 @@ export function addEventListenerWithMouse() {
         console.log('y:', y);
         selectedObjects = [];
         let clickedComponent = getRectAt(x, y, Components);
-        if (clickedComponent) {
+        if (clickedComponent && typeof clickedComponent != 'Wire') {
             if (!selectedObjects.includes(clickedComponent)) {
                 selectedObjects = [clickedComponent];
             }
@@ -235,6 +235,9 @@ export function addEventListenerWithMouse() {
     canvasContainer.addEventListener('mouseup', () => {
         isDragging = false;
         for (let object of selectedObjects) {
+            let Componente = Circuit.getComponent(object);
+            Componente.deleteAllConnections();
+            Componente.reconnectComponent(Circuit);
             Circuit.repaintCircuit(object);
         }
     });

@@ -58,8 +58,7 @@ class And extends Component {
 	deleteAllConnections() {
 		this.inputs.forEach((input) => input.deleteAllConnections(this));
 		this.outputs.forEach((output) => output.deleteAllConnections(this));
-		this.inputs = [];
-		this.outputs = [];
+		this.updateValue();
 	}
 }
 
