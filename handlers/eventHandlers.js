@@ -1,10 +1,13 @@
-import { eventHandlers,
+import {
+    eventHandlers,
     removeEventListenersWithParam,
     addEventListenerWithParam,
     addEventListenerWithDelete,
     removeEventListenersWithDelete,
     addEventListenerWithGate,
-    removeEventListenersWithGate } from "../modes/modes.js";
+    removeEventListenersWithGate,
+    addEventListenerWithMouse,
+} from "../modes/modes.js";
 export function setMode(mode) {
     const canvasContainer = document.getElementById('canvasContainer');
 
@@ -40,7 +43,7 @@ export function setMode(mode) {
     } else if (mode === 'constan00Mode') {
         addEventListenerWithParam('click', "0");
     } else if (mode === 'probeMode') {
-        addEventListenerWithParam('click',"-1");
+        addEventListenerWithParam('click', "-1");
     }
     // Add handleClickDelete listener if needed
     if (mode === 'deleteMode') {
@@ -48,12 +51,15 @@ export function setMode(mode) {
     }
     // Add handleClickGate listener if needed
     if (mode === 'andMode') {
-        addEventListenerWithGate('click',"and");
+        addEventListenerWithGate('click', "and");
     }
     if (mode === 'orMode') {
         addEventListenerWithGate('click',"or");
     }
     if (mode === 'notMode') {
         addEventListenerWithGate('click',"not");
+    }
+    if (mode === 'mouseMode') {
+        addEventListenerWithMouse();
     }
 }

@@ -11,33 +11,39 @@ export function changeMode(mode) {
 	document.getElementById('btn_or').classList.remove('select');
 	document.getElementById('btn_not').classList.remove('select');
 
-	switch (mode) {
-		case 'wire':
-			console.log('Modo wire');
-			document.getElementById('btn_wire').classList.add('select');
-			canvasContainer.style.cursor = 'crosshair';
-			setMode('wireMode');
-			break;
+    switch (mode) {
+        case 'mouse':
+            console.log('Modo mouse')
+            document.getElementById('btn_mouse').classList.add('select')    
+            canvasContainer.style.cursor = 'default'
+            setMode('mouseMode')
+            break
+        case 'wire':
+            console.log('Modo wire')
+            document.getElementById('btn_wire').classList.add('select')
+            canvasContainer.style.cursor = 'crosshair'
+            setMode('wireMode')
+            break
+            
+        case 'hand':
+            console.log('Modo hand')
+            document.getElementById('btn_hand').classList.add('select')
+            canvasContainer.style.cursor = 'grab'
+            setMode("handMode")
+            break
+        case "delete":
+            console.log('Modo delete')
 
-		case 'hand':
-			console.log('Modo hand');
-			document.getElementById('btn_hand').classList.add('select');
-			canvasContainer.style.cursor = 'grab';
-			setMode('handMode');
-			break;
-		case 'delete':
-			console.log('Modo delete');
-
-			btn_delete.classList.add('select');
-			canvasContainer.style.cursor = 'crosshair'; // Cambia el cursor
-
-			//setea el modo con sus eventos
-			setMode('deleteMode');
-			break;
-		// ¡¡TAMPOCO BORRAR!! esto tambien hace parte de lo mismo que se habla arriba
-		// case "const":
-		// 	btn_const.classList.add("select");
-		// 	canvasContainer.style.cursor = "crosshair"; // Cambia el cursor
+            btn_delete.classList.add("select");
+            canvasContainer.style.cursor = "crosshair"; // Cambia el cursor
+            
+            //setea el modo con sus eventos
+            setMode("deleteMode")
+            break;
+        // ¡¡TAMPOCO BORRAR!! esto tambien hace parte de lo mismo que se habla arriba
+        // case "const":
+        // 	btn_const.classList.add("select");
+        // 	canvasContainer.style.cursor = "crosshair"; // Cambia el cursor
 
 		// 	// Eventos del click para el modo constante
 		// 	canvas.addEventListener("click", handleClickPin);

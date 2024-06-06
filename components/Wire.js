@@ -1,9 +1,7 @@
 import Component from "./Component.js";
 
-class Wire extends Component {
+class Wire {
 	constructor() {
-		super(null);
-
 		this.lines = []; // Arrego que contiene todas las lineas del cable
 	}
 

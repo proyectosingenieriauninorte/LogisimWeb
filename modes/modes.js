@@ -1,11 +1,22 @@
-import {startDrawing,
-        endDrawing,drawCanvas} from "../modes/drawing.js"
-import {startDragging,
-        endDragging,
-        dragCanvas} from "../modes/dragging.js"
-import { handleClickPin,
-        handleClickDelete,
-        handleClickGate } from "../handlers/modesHandlers.js";
+import {
+    startDrawing,
+    endDrawing, drawCanvas
+} from "../modes/drawing.js"
+import {
+    startDragging,
+    endDragging,
+    dragCanvas
+} from "../modes/dragging.js"
+import {
+    handleClickPin,
+    handleClickDelete,
+    handleClickGate
+} from "../handlers/modesHandlers.js";
+import { canvasBack, canvasFront, ctxFront, ctxBack } from "../src/canvas/canvasSetup.js";
+
+import { Circuit } from "../canvas.js";
+
+import { getRectAt, drawComponents, roundToGrid } from "../utils/mover.js";
 
 export const eventHandlers = {
     wireMode: {
@@ -118,6 +129,20 @@ export const eventHandlers = {
             click: null // Se eliminarán los listeners específicos más adelante
         }
     }
+    ,
+    mouseMode: {
+        add: {},
+        remove: {
+            mousedown: startDragging,
+            mouseup: endDragging,
+            mousemove: dragCanvas,
+            mousedown: startDrawing,
+            mouseup: endDrawing,
+            mousemove: drawCanvas,
+            click: null // Se eliminarán los listeners específicos más adelante
+        }
+    }
+
 };
 
 let handleClickPinListeners = [];
@@ -148,15 +173,97 @@ export function removeEventListenersWithDelete() {
     });
     handleClickDeleteListeners = [];
 }
-export function addEventListenerWithGate(eventType,param){
+export function addEventListenerWithGate(eventType, param) {
     const wrappedHandler = (event) => handleClickGate(event, param);
-    handleClickGateListeners.push({eventType,wrappedHandler});
-    canvasContainer.addEventListener(eventType,wrappedHandler);
+    handleClickGateListeners.push({ eventType, wrappedHandler });
+    canvasContainer.addEventListener(eventType, wrappedHandler);
 }
-export function removeEventListenersWithGate(){
-    handleClickGateListeners.forEach(({eventType,wrappedHandler})=>{
-        canvasContainer.removeEventListener(eventType,wrappedHandler);
+export function removeEventListenersWithGate() {
+    handleClickGateListeners.forEach(({ eventType, wrappedHandler }) => {
+        canvasContainer.removeEventListener(eventType, wrappedHandler);
     });
     handleClickGateListeners = [];
+}
+
+export function addEventListenerWithMouse() {
+
+    var selectedObjects = [];
+    var isDragging = false;
+    var isSelecting = false;
+    var selectionStart = {};
+    var selectionEnd = {};
+    var offsetX = 0;
+    var offsetY = 0;
+    let Components = Circuit.Components;
+    canvasContainer.addEventListener('mousedown', (e) => {
+        console.log('Mouse down');
+        const rect = canvasBack.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        console.log('x:', x);
+        console.log('y:', y);
+        selectedObjects = [];
+        let clickedComponent = getRectAt(x, y, Components);
+        if (clickedComponent) {
+            if (!selectedObjects.includes(clickedComponent)) {
+                selectedObjects = [clickedComponent];
+            }
+            const rectIndex = Components.indexOf(clickedComponent);
+            Components.push(...Components.splice(rectIndex, 1)); // Move clicked rect to front
+            offsetX = x - clickedComponent.point.x;
+            offsetY = y - clickedComponent.point.y;
+            isDragging = true;
+        } else if (isSelecting) {
+            isDragging = false;
+            selectedObjects = [];
+            selectionStart = { x, y };
+            selectionEnd = { x, y };
+            isSelecting = true;
+        }
+        drawComponents(Components, selectedObjects, ctxFront, canvasFront);
+    });
+
+    canvasContainer.addEventListener('mousemove', (e) => {
+        const rect = canvasContainer.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        let clickedComponent = getRectAt(x, y, Components);
+        if (isDragging) {
+            const newX = roundToGrid(x - offsetX, 20);
+            const newY = roundToGrid(y - offsetY, 20);
+            const deltaX = newX - clickedComponent.point.x;
+            const deltaY = newY - clickedComponent.point.y;
+
+            for (let object of selectedObjects) {
+                object.point.x += deltaX;
+                object.point.y += deltaY;
+
+                object.inputs.forEach((pin) => {
+                    pin.point.x += deltaX;
+                    pin.point.y += deltaY;
+                });
+
+                object.outputs.forEach((pin) => {
+                    pin.point.x += deltaX;
+                    pin.point.y += deltaY;
+                });
+            }
+
+        } else if (isSelecting) {
+            selectionEnd = { x, y };
+            selectRects();
+            drawComponents();
+        }
+        drawComponents(Components, selectedObjects, ctxFront, canvasFront);
+    });
+
+    canvasContainer.addEventListener('mouseup', () => {
+        isDragging = false;
+        for (let object of selectedObjects) {
+            Circuit.repaintCircuit(object);
+        }
+    });
+
+
 }
 
