@@ -60,13 +60,12 @@ export function handleClickPin(event, temp_const) {
 
     // Remover el listener de mousedown anterior si existe
 	if (mousedownListener) {
-		console.log('Pinnnnnn')
 		canvasContainer.removeEventListener('mousedown', mousedownListener);
 	}
 
     // Crear un nuevo listener de mousedown
     mousedownListener = () => {
-        console.log('Working Pin')
+    
 		let wire = Circuit.getConnectedComponent(pin.point);
 
         if (wire) {
@@ -120,13 +119,13 @@ export function handleClickGate(event, gate_type) {
 
     // Remover el listener de mousedown anterior si existe
     if (gateMousedownListener) {
-		console.log('ANDDDD')
+	
         canvasContainer.removeEventListener('mousedown', gateMousedownListener);
     }
 
     // Crear un nuevo listener de mousedown
     gateMousedownListener = () => {
-        console.log('Working AND')
+    
 		gate.inputs.forEach((pin) => {
             let wire = Circuit.getConnectedComponent(pin.point);
             if (wire) {
