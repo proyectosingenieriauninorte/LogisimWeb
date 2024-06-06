@@ -28,8 +28,25 @@ export function handleClickDelete(event) {
 	}
 }
 
+var sw  = true
+
 /* Modo para agregar pines */
+export function handleNotClickPin(event, temp_const){
+	var coordinatesvol = approximateCoordinates(gridSize, getMousePos(event))
+	var posmouse = new Point(coordinatesvol.x,coordinatesvol.y)
+	let pinvol = null;
+	if (temp_const == -1) {
+		pinvol = new Pin(posmouse, "in");
+	} else {
+		pinvol = new Pin(posmouse, "out", temp_const);
+	}
+
+	var put = false
+	Circuit.draw(pinvol,put);
+}
+
 export function handleClickPin(event,temp_const) {
+
 	//var rect = canvasContainer.getBoundingClientRect();
 	//var mouseX = event.clientX - rect.left;
 	//var mouseY = event.clientY - rect.top;
@@ -56,7 +73,8 @@ export function handleClickPin(event,temp_const) {
 	}
 
 	Circuit.Components.push(pin);
-	Circuit.repaintCircuit()
+	var put = true
+	Circuit.repaintCircuit(put)
 }
 
 /* Modo para agregar puertas */
@@ -91,5 +109,6 @@ export function handleClickGate(event,gate_type) {
 	});
 
 	Circuit.Components.push(gate);
-	Circuit.repaintCircuit();
+	var put = true
+	Circuit.repaintCircuit(put);
 }
