@@ -4,7 +4,7 @@ import Pin from './Pin.js';
 
 class And extends Component {
 	constructor(point, entries = 2) {
-		super(point);
+		super(point, 40, 40);
 		let x = point.x;
 		let y = point.y;
 
@@ -58,8 +58,7 @@ class And extends Component {
 	deleteAllConnections() {
 		this.inputs.forEach((input) => input.deleteAllConnections(this));
 		this.outputs.forEach((output) => output.deleteAllConnections(this));
-		this.inputs = [];
-		this.outputs = [];
+		this.updateValue();
 	}
 }
 

@@ -1,11 +1,22 @@
-import {startDrawing,
-        endDrawing,drawCanvas} from "../modes/drawing.js"
-import {startDragging,
-        endDragging,
-        dragCanvas} from "../modes/dragging.js"
-import { handleClickPin,
-        handleClickDelete,
-        handleClickGate } from "../handlers/modesHandlers.js";
+import {
+    startDrawing,
+    endDrawing, drawCanvas
+} from "../modes/drawing.js"
+import {
+    startDragging,
+    endDragging,
+    dragCanvas
+} from "../modes/dragging.js"
+import {
+    handleClickPin,
+    handleClickDelete,
+    handleClickGate
+} from "../handlers/modesHandlers.js";
+import { canvasBack, canvasFront, ctxFront, ctxBack } from "../src/canvas/canvasSetup.js";
+
+import { Circuit } from "../canvas.js";
+
+import { getRectAt, getPinAt, drawComponents, drawPins, roundToGrid } from "../utils/mover.js";
 
 export const eventHandlers = {
     wireMode: {
@@ -100,7 +111,19 @@ export const eventHandlers = {
             click: null // Se eliminarán los listeners específicos más adelante
         }
     }
-
+    ,
+    mouseMode: {
+        add: {},
+        remove: {
+            mousedown: startDragging,
+            mouseup: endDragging,
+            mousemove: dragCanvas,
+            mousedown: startDrawing,
+            mouseup: endDrawing,
+            mousemove: drawCanvas,
+            click: null // Se eliminarán los listeners específicos más adelante
+        }
+    }
 };
 
 let handleClickPinListeners = [];

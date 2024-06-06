@@ -1,5 +1,7 @@
 class Component {
-	constructor(point) {
+	constructor(point, width = 0, height = 0) {
+		this.width = width;
+		this.height = height;
 		this.point = point;
 		this.value = "D"; // Variable de estado del clable.
 
@@ -63,6 +65,41 @@ class Component {
 	isConnectedTo(point) {
 		console.error("isConnectedTo not define.")
 	}
+
+
+	reconnectComponent(Circuit) {
+		
+
+		for (let pin of this.inputs) {
+			let wire = Circuit.getConnectedComponentWithNotParent(pin.point, pin.parent);
+			if (wire) {
+				if (pin.type == 'in') {
+					wire.addOutput(pin);
+				} else if (pin.type == 'out') {
+					wire.addInput(pin);
+				}
+
+				pin.addConnection(wire);
+				pin.updateValue();
+			}
+		}
+
+		for (let pin of this.outputs) {
+			let wire = Circuit.getConnectedComponentWithNotParent(pin.point, pin.parent);
+			if (wire) {
+				if (pin.type == 'in') {
+					wire.addOutput(pin);
+				} else if (pin.type == 'out') {
+					wire.addInput(pin);
+				}
+
+				pin.addConnection(wire);
+				pin.updateValue();
+			}
+		}
+
+	}
 }
 
 export default Component;
+

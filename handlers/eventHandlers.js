@@ -1,7 +1,13 @@
-import { eventHandlers,
+import {
+    eventHandlers,
+    removeEventListenersWithParam,
     addEventListenerWithParam,
     addEventListenerWithDelete,
-    addEventListenerWithGate } from "../modes/modes.js";
+    removeEventListenersWithDelete,
+    addEventListenerWithGate,
+    removeEventListenersWithGate,
+    addEventListenerWithMouse,
+} from "../modes/modes.js";
 export function setMode(mode) {
     //console.log('anTES', getAllEventListeners());
     const canvasContainer = document.getElementById('canvasContainer');
@@ -32,6 +38,11 @@ export function setMode(mode) {
     // Add handleClickGate listener if needed
     if (mode === 'andMode') {
         addEventListenerWithGate('mousemove',"and");
+        addEventListenerWithGate('click', "and");
+    }
+    //
+    if (mode === 'mouseMode') {
+        addEventListenerWithMouse();
     }
     
 }

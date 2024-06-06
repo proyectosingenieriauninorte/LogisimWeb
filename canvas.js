@@ -27,11 +27,14 @@ clearButton.addEventListener("click", () => {
 /* Circuito */
 
 //Instanciar el circuito
-var Circuit = new circuit()
+export var Circuit = new circuit();
 
 /* Cambio de modo de click */
 
 // Obtener botones y darles sus respectivos eventos
+
+//mouse
+const btn_mouse = new Button('btn_mouse', 'mouse');
 
 //dibujar cable
 const btn_wire = new Button('btn_wire', 'wire');
