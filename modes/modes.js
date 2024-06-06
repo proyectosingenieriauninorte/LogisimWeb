@@ -70,9 +70,7 @@ export const eventHandlers = {
         }
     },
     deleteMode: {
-        add: {
-            click: (event) => handleClickDelete(event)
-        },
+        add: {},
         remove: {
             mousedown: startDragging,
             mouseup: endDragging,

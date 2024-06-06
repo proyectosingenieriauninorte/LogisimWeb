@@ -1,10 +1,9 @@
 class Line {
-	constructor(pointA,pointinter,pointB) {
+	constructor(pointA,pointB) {
 		this.lineWidth = 4; // Grosor de la linea
 
 		// Puntos extremos de la linea
 		this.pointA = pointA;
-		this.pointinter = pointinter;
 		this.pointB = pointB;
 	}
 
@@ -12,7 +11,7 @@ class Line {
 	isEqualTo(line) {
 		if (!line instanceof Line) return false;
 
-		let [pA,pI, pB] = line.getPoints();
+		let [pA, pB] = line.getPoints();
 
 		if (
 			(pA.isEqualTo(this.pointA) && pB.isEqualTo(this.pointB)) ||
@@ -30,7 +29,7 @@ class Line {
 
 	// Retorna los puntos extremos de la linea
 	getPoints() {
-		return [this.pointA, this.pointinter, this.pointB];
+		return [this.pointA, this.pointB];
 	}
 }
 
