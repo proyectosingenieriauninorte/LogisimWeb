@@ -37,7 +37,12 @@ export function setMode(mode) {
         addEventListenerWithGate('mousemove',"and");
         addEventListenerWithGate('click', "and");
     }
-    //
+    if (mode === 'orMode') {
+        addEventListenerWithGate('click',"or");
+    }
+    if (mode === 'notMode') {
+        addEventListenerWithGate('click',"not");
+    }
     if (mode === 'mouseMode') {
         addEventListenerWithMouse();
     }

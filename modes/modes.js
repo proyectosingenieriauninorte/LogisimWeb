@@ -110,6 +110,30 @@ export const eventHandlers = {
             mousemove: drawCanvas,
             click: null // Se eliminarán los listeners específicos más adelante
         }
+    },
+    orMode: {
+        add: {},
+        remove: {
+            mousedown: startDragging,
+            mouseup: endDragging,
+            mousemove: dragCanvas,
+            mousedown: startDrawing,
+            mouseup: endDrawing,
+            mousemove: drawCanvas,
+            click: null // Se eliminarán los listeners específicos más adelante
+        }
+    },
+    notMode: {
+        add: {},
+        remove: {
+            mousedown: startDragging,
+            mouseup: endDragging,
+            mousemove: dragCanvas,
+            mousedown: startDrawing,
+            mouseup: endDrawing,
+            mousemove: drawCanvas,
+            click: null // Se eliminarán los listeners específicos más adelante
+        }
     }
     ,
     mouseMode: {
@@ -124,6 +148,7 @@ export const eventHandlers = {
             click: null // Se eliminarán los listeners específicos más adelante
         }
     }
+
 };
 
 let handleClickPinListeners = [];

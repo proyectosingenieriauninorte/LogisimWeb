@@ -4,7 +4,6 @@ import { changeMode } from "./src/circuit/changemode.js";
 import { resizeCanvas, clearCanvas } from "./src/canvas/canvasSetup.js"
 import circuit from "./src/circuit/circuit.js";
 
-
 /* Inicialización del canvas */
 
 //Inicializar canvas
@@ -60,23 +59,15 @@ const btn_probe = new Button("btn_probe", "probe");
 //And
 const btn_and = new Button("btn_and", "and");
 
+// Or
+const btn_or = new Button("btn_or", "or");
+
+// Not
+const btn_not = new Button("btn_not", "not");
 
 /* Inicialización */
 resizeCanvas();
 changeMode("wire");
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 //Exportar circuito 
 export default Circuit;
