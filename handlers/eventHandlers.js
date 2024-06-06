@@ -1,11 +1,8 @@
 import {
     eventHandlers,
-    removeEventListenersWithParam,
     addEventListenerWithParam,
     addEventListenerWithDelete,
-    removeEventListenersWithDelete,
     addEventListenerWithGate,
-    removeEventListenersWithGate,
     addEventListenerWithMouse,
 } from "../modes/modes.js";
 export function setMode(mode) {
