@@ -191,14 +191,10 @@ export function addEventListenerWithMouse() {
         const rect = canvasBack.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
-        console.log('x:', x);
-        console.log('y:', y);
         selectedComponents = [];
         selectedPins = [];
         let clickedComponent = getRectAt(x, y, Components);
         let clickedPin = getPinAt(x, y, Components);
-        console.log('Components:', Components);
-        console.log('clickedPin:', clickedPin);
         if (clickedComponent && typeof clickedComponent != 'Wire') {
             if (!selectedComponents.includes(clickedComponent)) {
                 selectedComponents = [clickedComponent];

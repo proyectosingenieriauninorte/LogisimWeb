@@ -81,7 +81,7 @@ export function handleClickPin(event, temp_const) {
 
         Circuit.Components.push(pin);
         Circuit.repaintCircuit();
-        console.log(Circuit.Components);
+        
 
         // Limpiar el pin actual después de añadirlo
         currentPin = null;
@@ -149,7 +149,7 @@ export function handleClickGate(event, gate_type) {
 
         Circuit.Components.push(gate);
         Circuit.repaintCircuit();
-        console.log(Circuit.Components);
+    
 
         // Limpiar la puerta actual después de añadirla
         currentGate = null;

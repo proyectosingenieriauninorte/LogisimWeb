@@ -29,10 +29,19 @@ var selectedComponents;
 var Circuit;
 
 export function openModal(object, circuit) {
-    modal.style.display = 'block';
-    selectedComponents = object;
-    Circuit = circuit;
-    constantValueInput.value = object.value;
+    if (object.parent == null) {
+        modal.style.display = 'block';
+        selectedComponents = object;
+        Circuit = circuit;
+        constantValueInput.value = object.value;
+    }
+    if (object.parent == 'Wire'){
+        modal.style.display = 'block';
+        selectedComponents = object;
+        Circuit = circuit;
+        constantValueInput.value = object.value;
+    }
+
 }
 
 window.addEventListener('click', (event) => {

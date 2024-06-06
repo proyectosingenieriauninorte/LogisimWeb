@@ -1,8 +1,8 @@
 import Component from './Component.js';
 
 class Gate extends Component {
-	constructor(point) {
-		super(point);
+	constructor(point) {	
+		super(point, 40, 40);
 	}
 
 	setValue(value) {

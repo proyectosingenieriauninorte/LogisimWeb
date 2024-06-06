@@ -4,7 +4,7 @@ import Pin from './Pin.js';
 
 class And extends Gate {
 	constructor(point, entries = 2) {
-		super(point, 40, 40);
+		super(point);
 		let x = point.x;
 		let y = point.y;
 
