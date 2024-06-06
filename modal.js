@@ -49,6 +49,7 @@ window.addEventListener('click', (event) => {
         modal.style.display = 'none';
     }
 });
+// Funcionalidad
 
 saveBtn.addEventListener('click', () => {
     selectedComponents.setValue(constantValueInput.value);
