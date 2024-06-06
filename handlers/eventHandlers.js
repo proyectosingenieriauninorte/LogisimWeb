@@ -5,7 +5,10 @@ import {
     addEventListenerWithGate,
     addEventListenerWithMouse,
 } from "../modes/modes.js";
+import { ctxFront } from "../src/canvas/canvasSetup.js";
 export function setMode(mode) {
+
+    ctxFront.clearRect(0, 0, canvasFront.width, canvasFront.height)
     //console.log('anTES', getAllEventListeners());
     const canvasContainer = document.getElementById('canvasContainer');
 

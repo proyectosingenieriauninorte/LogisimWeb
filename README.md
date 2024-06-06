@@ -7,34 +7,38 @@ Logisim Web es una herramienta educativa diseñada para el diseño y la simulaci
 ## Pasos para Ejecutarla
 
 1. **Clonar el repositorio**:
-    ```bash
-    git clone https://github.com/tu-usuario/logisim-web.git
-    ```
+
+   ```bash
+   git clone https://github.com/tu-usuario/logisim-web.git
+   ```
 2. **Ingresar al directorio**:
 
-    ```bash
-    cd logisim-web
-    ```
-
+   ```bash
+   cd logisim-web
+   ```
 3. **Abrir el archivo index.html en su navegador web**:
-   Simplemente haga doble clic en el archivo index.html o arrástrelo y suéltelo en una ventana de su navegador web.
+   Simplemente haga doble clic en el archivo index.html que está en la carpeta public o arrástrelo y suéltelo en una ventana de su navegador web.
 
 ## Sugerencias de Funcionalidades Futuras
 
--   Mejorar la funcionalidad de arrastrar y soltar:
-    -   Optimizar la experiencia de usuario permitiendo una interacción más intuitiva y fluida con los componentes del circuito.
--   Implementar más componentes de circuito:
-    -   Incluir una variedad más amplia de componentes como multiplexores, decodificadores, flip-flops y contadores para ampliar las posibilidades de diseño y simulación.
--   Integración con herramientas educativas:
-    -   Desarrollar funcionalidades que permitan la integración con plataformas educativas y LMS (Learning Management Systems) para facilitar la asignación y evaluación de tareas relacionadas con el diseño de circuitos digitales.
--   Simulación en tiempo real:
-    -   Implementar simulación en tiempo real para visualizar el comportamiento del circuito a medida que se realizan modificaciones, proporcionando una retroalimentación inmediata al usuario.
+- Mejorar la funcionalidad de arrastrar y soltar:
+  - Optimizar la experiencia de usuario permitiendo una interacción más intuitiva y fluida con los componentes del circuito.
+- Implementar más componentes de circuito:
+  - Incluir una variedad más amplia de componentes como multiplexores, decodificadores, flip-flops y contadores para ampliar las posibilidades de diseño y simulación.
+- Integración con herramientas educativas:
+  - Desarrollar funcionalidades que permitan la integración con plataformas educativas y LMS (Learning Management Systems) para facilitar la asignación y evaluación de tareas relacionadas con el diseño de circuitos digitales.
+- Simulación en tiempo real:
+  - Implementar simulación en tiempo real para visualizar el comportamiento del circuito a medida que se realizan modificaciones, proporcionando una retroalimentación inmediata al usuario.
 
 ## Listado de Estudiantes
 
 Estudiante 1: Elkin Santis, Responsable de la implementación del frontend y diseño de la interfaz de usuario.
+
 Estudiante 2: Edinson Noriega, Encargado de la lógica de simulación de circuitos y la integración de componentes.
+
 Estudiante 3: Luisangel Parra, Desarrollador de las funcionalidades de arrastrar y soltar, y optimización de la usabilidad.
+
+
 Estudiante 4: Luis LLerena, Responsable de la documentación, pruebas y aseguramiento de la calidad del software.
 
 ---
