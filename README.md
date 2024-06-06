@@ -1,3 +1,6 @@
+
+![image](images/edited_image_large_text.png)
+
 # Logisim Web: Plataforma Educativa para el Diseño de Circuitos Digitales
 
 ## Resumen y Justificación de la Herramienta
