@@ -35,7 +35,6 @@ export function setMode(mode) {
     // Add handleClickGate listener if needed
     if (mode === 'andMode') {
         addEventListenerWithGate('mousemove',"and");
-        addEventListenerWithGate('click', "and");
     }
     if (mode === 'orMode') {
         addEventListenerWithGate('mousemove',"or");
