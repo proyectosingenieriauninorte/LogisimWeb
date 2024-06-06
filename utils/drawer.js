@@ -65,8 +65,16 @@ export function drawPin(pin, ctx, etq = true) {
 		ctx.stroke();
 		ctx.closePath();
 
-		x = x + 5;
+		x = x + wd + 13;
 		y = y + 5;
+
+		if (etq) {
+			ctx.beginPath();
+			ctx.fillStyle = color;
+			ctx.font = 'bold ' + hg + 'px Arial';
+			ctx.fillText(value, x, y);
+			ctx.closePath();
+		}
 	} else if (pin.type == 'out') {
 		ctx.beginPath();
 		ctx.arc(x, y, defaultPointSize * 8, 0, 2 * Math.PI);
@@ -74,16 +82,16 @@ export function drawPin(pin, ctx, etq = true) {
 		ctx.fill();
 		ctx.closePath();
 
-		x = x - 15;
+		x = x - wd - 15;
 		y = y + 5;
-	}
 
-	if (etq) {
-		ctx.beginPath();
-		ctx.fillStyle = color;
-		ctx.font = 'bold ' + hg + 'px Arial';
-		ctx.fillText(value, x, y);
-		ctx.closePath();
+		if (etq) {
+			ctx.beginPath();
+			ctx.fillStyle = color;
+			ctx.font = 'bold ' + hg + 'px Arial';
+			ctx.fillText(value, x - wd + 8, y);
+			ctx.closePath();
+		}
 	}
 }
 
