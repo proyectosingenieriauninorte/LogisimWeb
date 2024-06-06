@@ -12,9 +12,12 @@ import {
     handleClickDelete,
     handleClickGate
 } from "../handlers/modesHandlers.js";
+
 import { canvasBack, canvasFront, ctxFront, ctxBack } from "../src/canvas/canvasSetup.js";
 
 import { Circuit } from "../canvas.js";
+
+import { openModal } from "../modal.js";
 
 import { getRectAt, getPinAt, drawComponents, drawPins, roundToGrid } from "../utils/mover.js";
 
@@ -185,7 +188,6 @@ export function addEventListenerWithMouse() {
     var offsetY = 0;
     let Components = Circuit.Components;
     canvasContainer.addEventListener('mousedown', (e) => {
-        console.log('Mouse down');
         const rect = canvasBack.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
@@ -215,6 +217,7 @@ export function addEventListenerWithMouse() {
             Components.push(...Components.splice(rectIndex, 1)); // Move clicked rect to front
             offsetX = x - clickedPin.point.x;
             offsetY = y - clickedPin.point.y;
+            openModal(clickedPin, Circuit);
         } else if (isSelecting) {
             isDragging = false;
             selectionStart = { x, y };
@@ -265,8 +268,8 @@ export function addEventListenerWithMouse() {
             let Componente = Circuit.getComponent(object);
             Componente.deleteAllConnections();
             Componente.reconnectComponent(Circuit);
-            Circuit.repaintCircuit(object);
-        }
+            Circuit.repaintCircuit();
+        }   
     });
 }
 
