@@ -158,6 +158,16 @@ class circuit {
 		this.Components = [];
 		//clearCanvas()
 	}
+
+	// Funcion para eliminar un componente
+	removeComponent(comp) {
+		if (comp instanceof Wire) {
+			this.Wires = this.Wires.filter((wire) => wire != comp);
+		} else {
+			this.Components = this.Components.filter((component) => component != comp);
+		}
+	}
+
 	repaintCircuit() {
 		console.log('WIRES:',this.Wires);
 		console.log('COMPONENTS',this.Components);
@@ -165,7 +175,6 @@ class circuit {
 		initCanvas(ctxBack);
 		this.Wires.forEach((wire) => this.draw(wire)); // Pinta todos los cables
 		this.Components.forEach((comp) => this.draw(comp)); // Pinta todos los componentes
-
 	}
 
 }

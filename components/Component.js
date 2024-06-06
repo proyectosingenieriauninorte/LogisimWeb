@@ -1,5 +1,7 @@
 class Component {
-	constructor(point) {
+	constructor(point, width = 0, height  = 0) {
+		this.width = width;
+		this.height = height;
 		this.point = point;
 		this.value = "D"; // Variable de estado del clable.
 
