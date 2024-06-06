@@ -9,7 +9,7 @@ export var canvasBack = document.getElementById('canvasBack')
 export var ctxBack = canvasBack.getContext('2d')
 
 // Tamaño del grid y tamaño del punto
-var canvasContainer = document.getElementById('canvasContainer')
+export var canvasContainer = document.getElementById('canvasContainer')
 
 export function initCanvas(ctx) {
     for (var x = 0; x <= canvasBack.width; x += gridSize) {

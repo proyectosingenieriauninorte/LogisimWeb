@@ -112,7 +112,7 @@ class circuit {
 	// Funcion para actualizar el estado de los cables
 	selectedPoint = null; // Nodo seleccionado
 
-	draw(obj) {
+	draw(obj,put) {
 		//console.log (obj.constructor.name);
 		if (obj instanceof Point) {
 			drawPoint(obj.x, obj.y);
@@ -143,10 +143,10 @@ class circuit {
 			obj.lines.forEach((ln) => 
 			drawer.drawLine(ctxBack,ln.getPoints(),color));
 		} else if (obj instanceof Pin) {
-			drawer.drawPin(obj,ctxFront);
+			drawer.drawPin(obj,put);
 		} else if (obj instanceof And) {
-			obj.inputs.forEach((pin) => drawer.drawPin(pin,ctxBack));
-			obj.outputs.forEach((pin) => drawer.drawPin(pin,ctxBack));
+			obj.inputs.forEach((pin) => drawer.drawPin(pin,put));
+			obj.outputs.forEach((pin) => drawer.drawPin(pin,put));
 		} else {
 			console.error("No se pudo pintar el objeto");
 			console.error("Objeto: ", obj);
@@ -158,13 +158,13 @@ class circuit {
 		this.Components = [];
 		//clearCanvas()
 	}
-	repaintCircuit() {
+	repaintCircuit(put) {
 		console.log('WIRES:',this.Wires);
 		console.log('COMPONENTS',this.Components);
 		clearCanvas();
 		initCanvas(ctxBack);
 		this.Wires.forEach((wire) => this.draw(wire)); // Pinta todos los cables
-		this.Components.forEach((comp) => this.draw(comp)); // Pinta todos los componentes
+		this.Components.forEach((comp) => this.draw(comp,put)); // Pinta todos los componentes
 
 	}
 
