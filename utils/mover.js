@@ -9,6 +9,13 @@ export function getRectAt(x, y, objects) {
     );
 }
 
+export function getPinAt(x, y, objects) {
+    return objects.find(object =>
+        x >= object.point.x - 5 && x <= object.point.x + 5 &&
+        y >= object.point.y - 5 && y <= object.point.y + 5
+    );
+}
+
 export function drawComponents(objects, selectedObjects, ctx, canvas) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     for (let object of objects) {
@@ -24,9 +31,24 @@ export function drawComponents(objects, selectedObjects, ctx, canvas) {
     }
 }
 
+export function drawPins(objects, selectedObjects, ctx, canvas) {
+    for (let object of objects) {
+        if (selectedObjects.includes(object)) {
+            drawPinHandles(ctx, object);
+        }
+    }
+}
+
 export function roundToGrid(value, gridSize) {
     return Math.round(value / gridSize) * gridSize;
 }
+
+function drawPinHandles(ctx, object) {
+    // Draw circle around pin
+    ctx.arc(object.point.x, object.point.y, handleSize, 0, 5 * Math.PI);
+    ctx.stroke();
+}
+
 
 
 function drawBoxHandles(ctx, object) {

@@ -16,7 +16,7 @@ import { canvasBack, canvasFront, ctxFront, ctxBack } from "../src/canvas/canvas
 
 import { Circuit } from "../canvas.js";
 
-import { getRectAt, drawComponents, roundToGrid } from "../utils/mover.js";
+import { getRectAt, getPinAt, drawComponents, drawPins, roundToGrid } from "../utils/mover.js";
 
 export const eventHandlers = {
     wireMode: {
@@ -162,7 +162,8 @@ export function removeEventListenersWithGate() {
 
 export function addEventListenerWithMouse() {
 
-    var selectedObjects = [];
+    var selectedComponents = [];
+    var selectedPins = [];
     var isDragging = false;
     var isSelecting = false;
     var selectionStart = {};
@@ -177,25 +178,38 @@ export function addEventListenerWithMouse() {
         const y = e.clientY - rect.top;
         console.log('x:', x);
         console.log('y:', y);
-        selectedObjects = [];
+        selectedComponents = [];
+        selectedPins = [];
         let clickedComponent = getRectAt(x, y, Components);
+        let clickedPin = getPinAt(x, y, Components);
+        console.log('Components:', Components);
+        console.log('clickedPin:', clickedPin);
         if (clickedComponent && typeof clickedComponent != 'Wire') {
-            if (!selectedObjects.includes(clickedComponent)) {
-                selectedObjects = [clickedComponent];
+            if (!selectedComponents.includes(clickedComponent)) {
+                selectedComponents = [clickedComponent];
             }
             const rectIndex = Components.indexOf(clickedComponent);
             Components.push(...Components.splice(rectIndex, 1)); // Move clicked rect to front
             offsetX = x - clickedComponent.point.x;
             offsetY = y - clickedComponent.point.y;
             isDragging = true;
+
+        } else if (clickedPin && typeof clickedPin != 'Pin') {
+            if (!selectedPins.includes(clickedPin)) {
+                selectedPins = [clickedPin];
+            }
+            const rectIndex = Components.indexOf(clickedPin);
+            Components.push(...Components.splice(rectIndex, 1)); // Move clicked rect to front
+            offsetX = x - clickedPin.point.x;
+            offsetY = y - clickedPin.point.y;
         } else if (isSelecting) {
             isDragging = false;
-            selectedObjects = [];
             selectionStart = { x, y };
             selectionEnd = { x, y };
             isSelecting = true;
         }
-        drawComponents(Components, selectedObjects, ctxFront, canvasFront);
+        drawComponents(Components, selectedComponents, ctxFront, canvasFront);
+        drawPins(Components, selectedPins, ctxFront, canvasFront);
     });
 
     canvasContainer.addEventListener('mousemove', (e) => {
@@ -209,7 +223,7 @@ export function addEventListenerWithMouse() {
             const deltaX = newX - clickedComponent.point.x;
             const deltaY = newY - clickedComponent.point.y;
 
-            for (let object of selectedObjects) {
+            for (let object of selectedComponents) {
                 object.point.x += deltaX;
                 object.point.y += deltaY;
 
@@ -229,19 +243,17 @@ export function addEventListenerWithMouse() {
             selectRects();
             drawComponents();
         }
-        drawComponents(Components, selectedObjects, ctxFront, canvasFront);
+        drawComponents(Components, selectedComponents, ctxFront, canvasFront);
     });
 
     canvasContainer.addEventListener('mouseup', () => {
         isDragging = false;
-        for (let object of selectedObjects) {
+        for (let object of selectedComponents) {
             let Componente = Circuit.getComponent(object);
             Componente.deleteAllConnections();
             Componente.reconnectComponent(Circuit);
             Circuit.repaintCircuit(object);
         }
     });
-
-
 }
 
