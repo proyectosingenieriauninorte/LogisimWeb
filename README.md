@@ -86,13 +86,13 @@ Estas mejoras están destinadas a enriquecer la experiencia de aprendizaje y la 
 
 ## Listado de Estudiantes
 
-Estudiante 1: Elkin Santis, Responsable de la implementación del frontend y diseño de la interfaz de usuario.
+Estudiante 1: Elkin Santis, Responsable de la implementación del frontend y diseño de la interfaz de usuario. @ErSantis
 
-Estudiante 2: Edinson Noriega, Encargado de la lógica de simulación de circuitos y la integración de componentes.
+Estudiante 2: Edinson Noriega, Encargado de la lógica de simulación de circuitos y la integración de componentes. @Almor21
 
-Estudiante 3: Luisangel Parra, Desarrollador de las funcionalidades de arrastrar y soltar, y optimización de la usabilidad.
+Estudiante 3: Luisangel Parra, Desarrollador de las funcionalidades de arrastrar y soltar, y optimización de la usabilidad. @LuisangelParra
 
-Estudiante 4: Luis LLerena, Responsable de la documentación, pruebas y aseguramiento de la calidad del software.
+Estudiante 4: Luis LLerena, Responsable de la documentación, pruebas y aseguramiento de la calidad del software. @lellerena
 
 ---
 
