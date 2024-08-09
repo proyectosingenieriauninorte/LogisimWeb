@@ -1,26 +1,28 @@
 class Connectable {
     constructor() {
         this.connections = [];
+        this.dirty = true;
     }
 
     addConnection(comp) {
         this.connections.push(comp);
-        this.updateValue();
+        this.markDirty();
     }
 
     removeConnection(comp) {
         this.connections = this.connections.filter(connection => connection != comp);
-        this.updateValue();
+        this.markDirty();
     }
 
     deleteAllConnections() {
         this.connections.forEach(connection => connection.removeConnection(this));
         this.connections = [];
-        this.updateValue();
+        this.markDirty();
     }
 
-    updateValue() {
-        // To be overridden by subclasses
+    markDirty() {
+        this.dirty = true;
+        this.connections.forEach(connection => connection.markDirty());
     }
 }
 

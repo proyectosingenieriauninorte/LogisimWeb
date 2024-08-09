@@ -7,52 +7,55 @@ class Component {
 
 		this.inputs = []; // Entradas a las que esta conectado el cable
 		this.outputs = []; // Salidas a las que esta conectado el cable
+		this.dirty = true; // Start as dirty
 	}
 
 	// Define un valor especifico
-	setValue(value) {
-		this.value = value;
-		this.outputs.forEach((output) => output.updateValue());
-	}
+    setValue(value) {
+        if (this.value !== value) {
+            this.value = value;
+            this.markOutputsDirty();
+        }
+    }
 
-	// Actualiza el valor segun las entradas de señal a la que esta conectado
-	updateValue() {
-		console.error("updateValue not define.")
-	}
-
-	// Devuelve el valor en el cable
 	getValue() {
 		return this.value;
 	}
 
-	// Agrega una entrada de señal
-	addInput(comp) {
-		this.inputs.push(comp);
-		this.updateValue();
-	}
+	markDirty() {
+        this.dirty = true;
+        this.updateValue(); // Trigger update if marked dirty
+    }
 
-	// Elimina una entrada de señal
-	removeInput(comp) {
-		this.inputs = this.inputs.filter((input) => input != comp);
-		this.updateValue();
-	}
+    markOutputsDirty() {
+        this.outputs.forEach(output => output.markDirty());
+    }
 
-	// Agrega una salida de señal
-	addOutput(comp) {
-		this.outputs.push(comp);
-	}
+    updateValue() {
+        // To be overridden by subclasses
+        if (this.dirty) {
+            // Recalculate the value here in subclasses
+            this.dirty = false; // Mark as clean after recalculating
+        }
+    }
 
-	// Elimina una salida de señal
-	removeOutput(comp) {
-		this.outputs = this.outputs.filter((output) => output != comp);
-	}
+    addInput(comp) {
+        this.inputs.push(comp);
+        this.markDirty(); // Mark as dirty when new input is added
+    }
 
-	// Elimina una conexion
-	removeConnection(comp) {
-		this.inputs = this.inputs.filter((input) => input != comp);
-		this.outputs = this.outputs.filter((output) => output != comp);
-		this.updateValue();
-	}
+    removeInput(comp) {
+        this.inputs = this.inputs.filter(input => input !== comp);
+        this.markDirty(); // Mark as dirty when input is removed
+    }
+
+    addOutput(comp) {
+        this.outputs.push(comp);
+    }
+
+    removeOutput(comp) {
+        this.outputs = this.outputs.filter(output => output !== comp);
+    }
 
 	// Elimina todas las conexiones
 	deleteAllConnections() {

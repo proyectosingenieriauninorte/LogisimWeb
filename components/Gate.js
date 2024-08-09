@@ -3,11 +3,17 @@ import Point from './Point.js';
 import Pin from './Pin.js';
 
 class Gate extends Component {
-    constructor(point) {
+	constructor(point, pinFactory) {
         super(point, 40, 40);
-        this.inputs = [];
-        this.outputs = [];
+        this.pinFactory = pinFactory;
     }
+
+	isConnectedTo(point) {
+        // Check if any input or output pin is connected to the given point
+        let pin = [...this.inputs, ...this.outputs].find(input => input.isConnectedTo(point));
+        return pin ? true : false;
+    }
+
 
     initializePins(point, entries) {
         let x = point.x;
@@ -15,30 +21,43 @@ class Gate extends Component {
 
         // Initialize input pins
         for (let i = 0; i < entries; i++) {
-            let pt = new Point(x - 20, y + i * 40 - 20);
-            this.inputs.push(new Pin(pt, 'in', 'D', this));
+            let pt = this.pinFactory.createPoint(x - 20, y + i * 40 - 20);
+            this.inputs.push(this.pinFactory.createPin(pt, 'in', 'D', this));
         }
 
         // Initialize output pin
-        let pt = new Point(x + 20, y);
-        this.outputs.push(new Pin(pt, 'out', 'D', this));
+        let pt = this.pinFactory.createPoint(x + 20, y);
+        this.outputs.push(this.pinFactory.createPin(pt, 'out', 'D', this));
+        this.updateValue();
+    }
+
+    setValue(value) {
+        if (this.cachedValue !== value) {
+            this.cachedValue = value;
+            this.dirty = false;
+            this.outputs.forEach(output => output.updateValue());
+        }
+    }
+
+    markDirty() {
+        this.dirty = true;
         this.updateValue();
     }
 
     updateValue() {
-        // To be overridden by subclasses
+        if (this.dirty) {
+            // Subclasses will implement actual logic here
+            this.dirty = false;
+        }
     }
 
-    isConnectedTo(point) {
-        let pin = [...this.inputs, ...this.outputs].find(input => input.isConnectedTo(point));
-        return pin ? pin : null;
+    addInput(comp) {
+        super.addInput(comp);
+        this.markDirty();
     }
 
-    deleteAllConnections() {
-        this.inputs.forEach(input => input.deleteAllConnections(this));
-        this.outputs.forEach(output => output.deleteAllConnections(this));
-        this.updateValue();
+    removeInput(comp) {
+        super.removeInput(comp);
+        this.markDirty();
     }
-}
-
-export default Gate;
+}export default Gate;
