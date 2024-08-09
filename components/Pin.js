@@ -1,72 +1,36 @@
-class Pin {
-	constructor(point, type, value = "D", parent = null) {
-		this.parent = parent;
-		this.point = point;
-		this.value = value;
-		this.type = type;
+import Connectable from './Connectable.js';
+import Point from './Point.js';
 
-		this.connections = []; // Salidas o Entradas a las que esta conectado el cable
-	}
+class Pin extends Connectable {
+    constructor(point, type, value = "D", parent = null) {
+        super();
+        this.point = point;
+        this.type = type;
+        this.value = value;
+        this.parent = parent;
+    }
 
-	setValue(value) {
-		this.value = value;
-		this.connections.forEach((connection) => connection.updateValue());
-	}
+    updateValue() {
+        if (this.type === "in") {
+            this.value = this.connections.reduce((prevValue, comp) => {
+                let currentValue = comp.getValue();
+                if (prevValue === currentValue) return prevValue;
+                if (prevValue === "D") return currentValue;
+                if (currentValue === "D") return prevValue;
+                return "E";
+            }, "D");
 
-	// Actualiza el valor del pin
-	updateValue() {
-		if (this.type == "in") {
-			this.value = this.connections.reduce((prevValue, comp) => {
-				let currentValue = comp.getValue();
-				let valueR = "";
-				if (prevValue == currentValue) {
-					valueR = prevValue;
-				} else if (prevValue == "D") {
-					valueR = currentValue;
-				} else if (currentValue == "D") {
-					valueR = prevValue;
-				} else if (prevValue != currentValue) {
-					valueR = "E";
-				}
+            if (this.parent) this.parent.updateValue();
+        }
+    }
 
-				return valueR;
-			}, "D");
+    getValue() {
+        return this.value;
+    }
 
-			if (this.parent) this.parent.updateValue();
-		}
-	}
-
-	// Devuelve el valor del pin
-	getValue() {
-		return this.value;
-	}
-
-	// Agrega una entrada de señal
-	addConnection(comp) {
-		this.connections.push(comp);
-		this.updateValue();
-	}
-
-	// Elimina una entrada de señal
-	removeConnection(comp) {
-		this.connections = this.connections.filter(
-			(connection) => connection != comp
-		);
-		this.updateValue();
-	}
-
-	// Elimina todas las conexiones
-	deleteAllConnections() {
-		this.connections.forEach((connection) =>
-			connection.removeConnection(this)
-		);
-		this.connections = [];
-		this.updateValue();
-	}
-
-	isConnectedTo(point) {
-		return this.point.isEqualTo(point) ? this : null;
-	}
+    isConnectedTo(point) {
+        return this.point.isEqualTo(point) ? this : null;
+    }
 }
 
 export default Pin;
