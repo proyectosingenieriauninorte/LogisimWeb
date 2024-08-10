@@ -1,6 +1,6 @@
-import Component from './Component.js';
-import Point from './Point.js';
-import Pin from './Pin.js';
+const Component = require('./Component.js');
+const Point = require('./Point.js');
+const Pin = require('./Pin.js');
 
 class Gate extends Component {
 	constructor(point, pinFactory) {
@@ -28,14 +28,21 @@ class Gate extends Component {
         // Initialize output pin
         let pt = this.pinFactory.createPoint(x + 20, y);
         this.outputs.push(this.pinFactory.createPin(pt, 'out', 'D', this));
-        this.updateValue();
+		this.markDirty(); 
     }
 
-    setValue(value) {
-        if (this.cachedValue !== value) {
-            this.cachedValue = value;
-            this.dirty = false;
-            this.outputs.forEach(output => output.updateValue());
+	setValue(value) {
+        console.log(`Setting value of gate: ${value}`);
+        
+        if (this.value !== value) {
+            this.value = value;
+            this.dirty = false;  // Mark as clean since we've just set the value
+
+            // Propagate the value to all connected output pins
+            this.outputs.forEach(output => {
+                output.setValue(value);
+                console.log(`Output pin set to value: ${value}`);
+            });
         }
     }
 
@@ -45,10 +52,8 @@ class Gate extends Component {
     }
 
     updateValue() {
-        if (this.dirty) {
-            // Subclasses will implement actual logic here
-            this.dirty = false;
-        }
+        // This method should be implemented by subclasses
+        throw new Error('updateValue must be implemented by subclasses');
     }
 
     addInput(comp) {
@@ -60,4 +65,6 @@ class Gate extends Component {
         super.removeInput(comp);
         this.markDirty();
     }
-}export default Gate;
+}
+
+module.exports = Gate;

@@ -1,4 +1,4 @@
-import Point from '../components/Point.js';
+const Point = require('../components/Point.js');
 
 test('Point isEqualTo should return true for identical points', () => {
     const point1 = new Point(100, 100);

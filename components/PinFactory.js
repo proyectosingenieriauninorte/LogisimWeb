@@ -1,5 +1,5 @@
-import Point from './Point.js';
-import Pin from './Pin.js';
+const Point = require('./Point.js');
+const Pin = require('./Pin.js');
 
 class PinFactory {
     /**
@@ -25,4 +25,4 @@ class PinFactory {
     }
 }
 
-export default PinFactory;
+module.exports = PinFactory;

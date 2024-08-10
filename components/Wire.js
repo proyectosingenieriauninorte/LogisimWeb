@@ -1,4 +1,4 @@
-import Component from "./Component.js";
+const Component = require('./Component.js');
 
 class Wire extends Component {
 	constructor() {
@@ -70,4 +70,4 @@ class Wire extends Component {
 	}
 }
 
-export default Wire;
+module.exports = Wire;

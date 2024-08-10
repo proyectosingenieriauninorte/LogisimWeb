@@ -3,7 +3,7 @@ class Component {
 		this.width = width;
 		this.height = height;
 		this.point = point;
-		this.value = "D"; // Variable de estado del clable.
+		this.value = "D"; // Variable de estado del cable.
 
 		this.inputs = []; // Entradas a las que esta conectado el cable
 		this.outputs = []; // Salidas a las que esta conectado el cable
@@ -104,5 +104,5 @@ class Component {
 	}
 }
 
-export default Component;
+module.exports = Component;
 

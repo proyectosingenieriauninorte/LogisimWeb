@@ -33,4 +33,4 @@ class Line {
 	}
 }
 
-export default Line;
+module.exports = Line;

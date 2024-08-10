@@ -1,7 +1,7 @@
-import Gate from './Gate.js';
-import PinFactory from './PinFactory.js';
+const Gate = require('./Gate.js');
+const PinFactory = require('./PinFactory.js');
 
-class Or extends Gate {
+export class Or extends Gate {
     constructor(point, entries = 2) {
         super(point, PinFactory);
         this.initializePins(point, entries);
@@ -22,4 +22,4 @@ class Or extends Gate {
     }
 }
 
-export default Or;
+module.exports = Or;

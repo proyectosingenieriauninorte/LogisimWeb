@@ -83,6 +83,16 @@ Para mejorar aún más la experiencia de usuario y ampliar las capacidades de Lo
 
 Estas mejoras están destinadas a enriquecer la experiencia de aprendizaje y la funcionalidad de Logisim Web, permitiendo a los usuarios explorar y experimentar con circuitos digitales de manera más eficiente y efectiva.
 
+## Para probar
+
+Instalar dependencias:
+
+```bash
+npm init -y
+npm install --save-dev jest
+npm install --save-dev @babel/preset-env babel-jest
+
+
 
 ## Listado de Estudiantes
 

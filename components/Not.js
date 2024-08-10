@@ -1,8 +1,8 @@
-import Gate from './Gate.js';
-import Point from './Point.js';
-import Pin from './Pin.js';
+const Gate = require('./Gate.js');
+const Point = require('./Point.js');
+const Pin = require('./Pin.js');
 
-class Not extends Gate {
+export class Not extends Gate {
     constructor(point) {
         super(point);
         let x = point.x;
@@ -30,4 +30,4 @@ class Not extends Gate {
     }
 }
 
-export default Not;
+module.exports = Not;

@@ -26,4 +26,4 @@ class Connectable {
     }
 }
 
-export default Connectable;
+module.exports = Connectable;
