@@ -1,70 +1,37 @@
-const Component = require('./Component.js');
-const Point = require('./Point.js');
-const Pin = require('./Pin.js');
+import Component from './Component.js';
 
 class Gate extends Component {
-	constructor(point, pinFactory) {
-        super(point, 40, 40);
-        this.pinFactory = pinFactory;
-    }
-
-	isConnectedTo(point) {
-        // Check if any input or output pin is connected to the given point
-        let pin = [...this.inputs, ...this.outputs].find(input => input.isConnectedTo(point));
-        return pin ? true : false;
-    }
-
-
-    initializePins(point, entries) {
-        let x = point.x;
-        let y = point.y;
-
-        // Initialize input pins
-        for (let i = 0; i < entries; i++) {
-            let pt = this.pinFactory.createPoint(x - 20, y + i * 40 - 20);
-            this.inputs.push(this.pinFactory.createPin(pt, 'in', 'D', this));
-        }
-
-        // Initialize output pin
-        let pt = this.pinFactory.createPoint(x + 20, y);
-        this.outputs.push(this.pinFactory.createPin(pt, 'out', 'D', this));
-		this.markDirty(); 
-    }
+	constructor(point) {	
+		super(point, 40, 40);
+	}
 
 	setValue(value) {
-        console.log(`Setting value of gate: ${value}`);
-        
-        if (this.value !== value) {
-            this.value = value;
-            this.dirty = false;  // Mark as clean since we've just set the value
+		this.value = value;
+		this.outputs.forEach((output) => output.setValue(value));
+	}
 
-            // Propagate the value to all connected output pins
-            this.outputs.forEach(output => {
-                output.setValue(value);
-                console.log(`Output pin set to value: ${value}`);
-            });
-        }
-    }
+	// Devuelve el componente al que esta conectado un punto
+	isConnectedTo(point) {
+		let pin = this.inputs.find((input) => input.isConnectedTo(point));
+		if (pin) return pin;
 
-    markDirty() {
-        this.dirty = true;
+		pin = this.outputs.find((output) => output.isConnectedTo(point));
+		if (pin) return pin;
+
+		return this.point.x - 20 <= point.x &&
+			point.x <= this.point.x + 20 &&
+			this.point.y - 20 <= point.y &&
+			point.y <= this.point.y + 20
+			? this
+			: null;
+	}
+
+	// Elimina todas las conexciones
+	deleteAllConnections() {
+		this.inputs.forEach((input) => input.deleteAllConnections(this));
+        this.outputs.forEach((output) => output.deleteAllConnections(this));
         this.updateValue();
-    }
-
-    updateValue() {
-        // This method should be implemented by subclasses
-        throw new Error('updateValue must be implemented by subclasses');
-    }
-
-    addInput(comp) {
-        super.addInput(comp);
-        this.markDirty();
-    }
-
-    removeInput(comp) {
-        super.removeInput(comp);
-        this.markDirty();
-    }
+	}
 }
 
-module.exports = Gate;
+export default Gate;

@@ -1,57 +1,60 @@
-const Gate = require('./Gate');
-const PinFactory = require('./PinFactory');
+import Point from './Point.js';
+import Gate from './Gate.js';
+import Pin from './Pin.js';
 
-export class And extends Gate {
-    constructor(point, entries = 2) {
-        super(point, PinFactory);
-        this.initializePins(point, entries);
-    }
+class And extends Gate {
+	constructor(point, entries = 2) {
+		super(point);
+		let x = point.x;
+		let y = point.y;
 
+		// Inicializa las entradas
+		let pt = null;
+		for (let i = 0; i < entries; i++) {
+			pt = new Point(x - 20, y + i * 40 - 20);
+			this.inputs.push(new Pin(pt, 'in', 'D', this));
+		}
+
+		// Inicializa la salida
+		pt = new Point(x + 20, y);
+		this.outputs.push(new Pin(pt, 'out', 'D', this));
+		this.updateValue();
+	}
+
+	// Se reescribe el metodo de actualizacion del valor
 	updateValue() {
-        if (this.dirty) {
-            console.log('Starting updateValue for And gate');
+		this.setValue(
+			this.inputs.reduce((prevValue, current) => {
+				if (prevValue == 'E' || current.getValue() == 'E') return 'E';
+				if (current.getValue() == 'D') return prevValue;
+				if (prevValue == 'D') return current.getValue();
+				return (parseInt(prevValue, 2) & parseInt(current.getValue(), 2)).toString(2);
+			}, 'D')
+		);
+	}
 
-            const result = this.inputs.reduce((prevValue, current) => {
-                const currentValue = current.getValue();
-                
-                console.log(`Previous Value: ${prevValue}, Current Value: ${currentValue}`);
+	// Devuelve el componente al que esta conectado un punto
+	isConnectedTo(point) {
+		let pin = this.inputs.find((input) => input.isConnectedTo(point));
+		if (pin) return pin;
 
-                // Handle error state "E"
-                if (prevValue === 'E' || currentValue === 'E') {
-                    console.log('Found "E" state, setting result to "E"');
-                    return 'E';
-                }
+		pin = this.outputs.find((output) => output.isConnectedTo(point));
+		if (pin) return pin;
 
-                // If any input is "0", the result should be "0"
-                if (currentValue === '0') {
-                    console.log('Found "0" input, setting result to "0"');
-                    return '0';
-                }
+		return this.point.x - 20 <= point.x &&
+			point.x <= this.point.x + 20 &&
+			this.point.y - 20 <= point.y &&
+			point.y <= this.point.y + 20
+			? this
+			: null;
+	}
 
-                // If any input is "D", return "D"
-                if (currentValue === 'D') {
-                    console.log('Found "D" input, returning "D"');
-                    return 'D';
-                }
-
-                // Perform AND operation if both previous and current values are known (i.e., not "D")
-                if (prevValue !== 'D' && currentValue !== 'D') {
-                    const andResult = (parseInt(prevValue, 2) & parseInt(currentValue, 2)).toString(2);
-                    console.log(`AND Result: ${andResult}`);
-                    return andResult;
-                }
-
-                return prevValue;
-            }, '1');  // Start with '1' since AND gate returns 1 if all inputs are 1
-
-            console.log(`Final Result for And gate: ${result}`);
-            this.setValue(result);
-            this.dirty = false;  // Mark as clean after recalculating
-        } else {
-            console.log(`And gate is not dirty, skipping update, current value: ${this.value}`);
-        }
-    }
+	// Elimina todas las conexciones
+	deleteAllConnections() {
+		this.inputs.forEach((input) => input.deleteAllConnections(this));
+		this.outputs.forEach((output) => output.deleteAllConnections(this));
+		this.updateValue();
+	}
 }
 
-module.exports = And;
-
+export default And;

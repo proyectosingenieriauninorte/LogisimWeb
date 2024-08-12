@@ -1,56 +1,72 @@
-const Connectable = require('./Connectable');
+class Pin {
+	constructor(point, type, value = "D", parent = null) {
+		this.parent = parent;
+		this.point = point;
+		this.value = value;
+		this.type = type;
 
-class Pin extends Connectable {
-    constructor(point, type, value = "D", parent = null) {
-        super();
-        this.point = point;
-        this.type = type;
-        this.value = value;
-        this.parent = parent;
-    }
+		this.connections = []; // Salidas o Entradas a las que esta conectado el cable
+	}
 
-    setValue(value) {
-        console.log(`Setting pin value: ${value}`);
-        if (this.value !== value) {
-            this.value = value;
-            this.updateConnections(); // Notify connected components of the update
-            if (this.parent) {
-                this.parent.markDirty(); // Mark the parent gate as dirty
-            }
-        }
-    }
+	setValue(value) {
+		this.value = value;
+		this.connections.forEach((connection) => connection.updateValue());
+	}
 
-    updateConnections() {
-        this.connections.forEach(connection => connection.updateValue());
-    }
+	// Actualiza el valor del pin
+	updateValue() {
+		if (this.type == "in") {
+			this.value = this.connections.reduce((prevValue, comp) => {
+				let currentValue = comp.getValue();
+				let valueR = "";
+				if (prevValue == currentValue) {
+					valueR = prevValue;
+				} else if (prevValue == "D") {
+					valueR = currentValue;
+				} else if (currentValue == "D") {
+					valueR = prevValue;
+				} else if (prevValue != currentValue) {
+					valueR = "E";
+				}
 
-    updateValue() {
-        if (this.type === "in") {
-            this.value = this.connections.reduce((prevValue, comp) => {
-                let currentValue = comp.getValue();
-                console.log(`Updating value: prevValue=${prevValue}, currentValue=${currentValue}`);
+				return valueR;
+			}, "D");
 
-                if (prevValue === currentValue) return prevValue;
-                if (prevValue === "D") return currentValue;
-                if (currentValue === "D") return prevValue;
-                return "E";
-            }, "D");
+			if (this.parent) this.parent.updateValue();
+		}
+	}
 
-            if (this.parent) {
-                console.log(`Notifying parent to update value`);
-                this.parent.updateValue(); // Notify parent gate of the update
-            }
-        }
-    }
+	// Devuelve el valor del pin
+	getValue() {
+		return this.value;
+	}
 
-    getValue() {
-        console.log(`Getting pin value: ${this.value}`);
-        return this.value;
-    }
+	// Agrega una entrada de señal
+	addConnection(comp) {
+		this.connections.push(comp);
+		this.updateValue();
+	}
 
-    isConnectedTo(point) {
-        return this.point.isEqualTo(point) ? this : null;
-    }
+	// Elimina una entrada de señal
+	removeConnection(comp) {
+		this.connections = this.connections.filter(
+			(connection) => connection != comp
+		);
+		this.updateValue();
+	}
+
+	// Elimina todas las conexiones
+	deleteAllConnections() {
+		this.connections.forEach((connection) =>
+			connection.removeConnection(this)
+		);
+		this.connections = [];
+		this.updateValue();
+	}
+
+	isConnectedTo(point) {
+		return this.point.isEqualTo(point) ? this : null;
+	}
 }
 
-module.exports = Pin;
+export default Pin;

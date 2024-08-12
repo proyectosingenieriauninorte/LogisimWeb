@@ -1,8 +1,7 @@
 export default {
-    transform: {
-      '^.+\\.[tj]sx?$': 'babel-jest', // Transform JS/TS files using babel-jest
-    },
-    moduleFileExtensions: ['js', 'jsx', 'mjs'],
-    testMatch: ['**/__tests__/**/*.?(m)[jt]s?(x)', '**/?(*.)+(spec|test).?(m)[jt]s?(x)'],
-  };
-  
+  transform: {
+    '^.+\\.jsx?$': 'babel-jest',
+  },
+  moduleFileExtensions: ['js', 'jsx'],
+  testEnvironment: 'jsdom', // Since it's a web application
+};

@@ -1,17 +1,7 @@
-const And = require('../components/And');
-const Point = require('../components/Point');
-const Pin = require('../components/Pin');
+import And from '../components/And.js';
+import Point from '../components/Point.js';
 
-describe('And Gate', () => {
-
-    // test('should initialize with correct number of inputs and outputs', () => {
-    //     const point = new Point(100, 100);
-    //     const andGate = new And(point, 2);
-
-    //     expect(andGate.inputs.length).toBe(2);
-    //     expect(andGate.outputs.length).toBe(1);
-    // });
-
+describe('AND Gate Tests', () => {
     test('should return 1 when all inputs are 1', () => {
         const point = new Point(100, 100);
         const andGate = new And(point, 2);
@@ -34,7 +24,7 @@ describe('And Gate', () => {
         expect(andGate.getValue()).toBe('0');
     });
 
-    test('should return E if any input is E (error state)', () => {
+    test('should return E if any input is E', () => {
         const point = new Point(100, 100);
         const andGate = new And(point, 2);
 
@@ -45,7 +35,18 @@ describe('And Gate', () => {
         expect(andGate.getValue()).toBe('E');
     });
 
-    test('should handle dynamic number of inputs', () => {
+    test('should return D when all inputs are D', () => {
+        const point = new Point(100, 100);
+        const andGate = new And(point, 2);
+
+        andGate.inputs[0].setValue('D');
+        andGate.inputs[1].setValue('D');
+        andGate.updateValue();
+
+        expect(andGate.getValue()).toBe('D');
+    });
+
+    test('should handle 3 inputs correctly', () => {
         const point = new Point(100, 100);
         const andGate = new And(point, 3);
 

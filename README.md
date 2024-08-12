@@ -91,6 +91,8 @@ Instalar dependencias:
 npm init -y
 npm install --save-dev jest
 npm install --save-dev @babel/preset-env babel-jest
+npm install --save-dev jest-environment-jsdom
+
 
 
 
