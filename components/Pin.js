@@ -42,10 +42,14 @@ class Pin {
 	}
 
 	// Agrega una entrada de señal
-	addConnection(comp) {
-		this.connections.push(comp);
-		this.updateValue();
-	}
+    addConnection(pin) {
+		console.log(`this.connections: ${this.connections}, pin: ${pin}`);
+        if (!this.connections.includes(pin)) {
+			console.log('connections not includes pin, adding pin');
+            this.connections.push(pin);
+            pin.connections.push(this);
+        }
+    }
 
 	// Elimina una entrada de señal
 	removeConnection(comp) {

@@ -3,21 +3,24 @@ class Component {
 		this.width = width;
 		this.height = height;
 		this.point = point;
-		this.value = "D"; // Variable de estado del clable.
+		this.value = "D"; // Variable de estado del cable.
 
-		this.inputs = []; // Entradas a las que esta conectado el cable
-		this.outputs = []; // Salidas a las que esta conectado el cable
+		this.inputs = []; // Entradas a las que está conectado el cable
+		this.outputs = []; // Salidas a las que está conectado el cable
+		this.delay = 5; // Retraso en la propagación en milisegundos
 	}
 
-	// Define un valor especifico
+	// Define un valor específico
 	setValue(value) {
 		this.value = value;
-		this.outputs.forEach((output) => output.updateValue());
+		setTimeout(() => {
+			this.outputs.forEach((output) => output.updateValue());
+		}, this.delay);
 	}
 
-	// Actualiza el valor segun las entradas de señal a la que esta conectado
+	// Actualiza el valor según las entradas de señal a las que está conectado
 	updateValue() {
-		console.error("updateValue not define.")
+		console.error("updateValue not defined.");
 	}
 
 	// Devuelve el valor en el cable
@@ -33,7 +36,7 @@ class Component {
 
 	// Elimina una entrada de señal
 	removeInput(comp) {
-		this.inputs = this.inputs.filter((input) => input != comp);
+		this.inputs = this.inputs.filter((input) => input !== comp);
 		this.updateValue();
 	}
 
@@ -44,18 +47,19 @@ class Component {
 
 	// Elimina una salida de señal
 	removeOutput(comp) {
-		this.outputs = this.outputs.filter((output) => output != comp);
+		this.outputs = this.outputs.filter((output) => output !== comp);
 	}
 
-	// Elimina una conexion
+	// Elimina una conexión
 	removeConnection(comp) {
-		this.inputs = this.inputs.filter((input) => input != comp);
-		this.outputs = this.outputs.filter((output) => output != comp);
+		this.inputs = this.inputs.filter((input) => input !== comp);
+		this.outputs = this.outputs.filter((output) => output !== comp);
 		this.updateValue();
 	}
 
 	// Elimina todas las conexiones
 	deleteAllConnections() {
+		// Desconecta todas las entradas y salidas asociadas a este componente
 		this.inputs.forEach((input) => input.removeConnection(this));
 		this.outputs.forEach((output) => output.removeConnection(this));
 		this.inputs = [];
@@ -63,19 +67,18 @@ class Component {
 	}
 
 	isConnectedTo(point) {
-		console.error("isConnectedTo not define.")
+		// Este método debe ser implementado por las subclases para determinar si están conectadas a un punto específico
+		console.error("isConnectedTo not defined.");
 	}
 
-
 	reconnectComponent(Circuit) {
-		
-
+		// Reconectar entradas y salidas después de un cambio en el circuito
 		for (let pin of this.inputs) {
 			let wire = Circuit.getConnectedComponentWithNotParent(pin.point, pin.parent);
 			if (wire) {
-				if (pin.type == 'in') {
+				if (pin.type === 'in') {
 					wire.addOutput(pin);
-				} else if (pin.type == 'out') {
+				} else if (pin.type === 'out') {
 					wire.addInput(pin);
 				}
 
@@ -87,9 +90,9 @@ class Component {
 		for (let pin of this.outputs) {
 			let wire = Circuit.getConnectedComponentWithNotParent(pin.point, pin.parent);
 			if (wire) {
-				if (pin.type == 'in') {
+				if (pin.type === 'in') {
 					wire.addOutput(pin);
-				} else if (pin.type == 'out') {
+				} else if (pin.type === 'out') {
 					wire.addInput(pin);
 				}
 
@@ -97,9 +100,7 @@ class Component {
 				pin.updateValue();
 			}
 		}
-
 	}
 }
 
 export default Component;
-
