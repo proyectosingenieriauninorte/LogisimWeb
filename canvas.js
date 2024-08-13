@@ -53,6 +53,9 @@ const btn_const0 = new Button("btn_const0", "const0");
 //Contante 1
 const btn_const1 = new Button("btn_const1", "const1");
 
+//Clock
+const btn_clock = new Button("btn_clock", "clock");
+
 //Probe
 const btn_probe = new Button("btn_probe", "probe");
 

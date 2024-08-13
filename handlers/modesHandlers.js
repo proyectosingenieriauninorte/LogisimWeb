@@ -3,9 +3,10 @@ import Point from '../components/Point.js';
 import Wire from '../components/Wire.js';
 import And from '../components/And.js';
 import Or from '../components/Or.js';
+import Clock from '../components/Clock.js';
 import { getMousePos } from '../utils/util.js';
 import Circuit from '../canvas.js';
-import { approximateCoordinates, drawPin, drawGate } from '../utils/drawer.js';
+import { approximateCoordinates, drawPin,drawClockPin, drawGate } from '../utils/drawer.js';
 import { gridSize } from '../config/config.js';
 import Not from '../components/Not.js';
 import { ctxFront } from '../src/canvas/canvasSetup.js';
@@ -89,6 +90,55 @@ export function handleClickPin(event, temp_const) {
 
     // Agregar el nuevo listener de mousedown
     canvasContainer.addEventListener('mousedown', mousedownListener);
+}
+
+export function handleClickClockPin(event, temp_const) {
+    // Obtener las coordenadas del ratón y el punto aproximado en la cuadrícula
+    console.log("handleClickClockPin");
+    var coordinates = approximateCoordinates(gridSize, getMousePos(event));
+    var clickedPoint = new Point(coordinates.x, coordinates.y);
+    let pin = null;
+
+    pin = new Clock(clickedPoint, 'out');
+	
+    // Limpiar el canvas
+    ctxFront.clearRect(0, 0, canvasFront.width, canvasFront.height);
+    drawClockPin(pin, ctxFront);
+
+    // Guardar el pin actual
+    currentPin = pin;
+
+    // Remover el listener de mousedown anterior si existe
+	if (mousedownListener) {
+		canvasContainer.removeEventListener('mousedown', mousedownListener);
+	}
+
+    // Crear un nuevo listener de mousedown
+    mousedownListener = () => {
+        console.log("mousedownListener for handleClickClockPin");
+        pin.start();
+		let wire = Circuit.getConnectedComponent(pin.point);
+
+        if (wire) {
+            if (pin.type == 'in') {
+                wire.addOutput(pin);
+            } else if (pin.type == 'out') {
+                wire.addInput(pin);
+            }
+
+            pin.addConnection(wire);
+        }
+
+        Circuit.Components.push(pin);
+        Circuit.repaintCircuit();
+        
+
+        // Limpiar el pin actual después de añadirlo
+        currentPin = null;
+    };
+    // Agregar el nuevo listener de mousedown
+    canvasContainer.addEventListener('mousedown', mousedownListener);
+
 }
 
 

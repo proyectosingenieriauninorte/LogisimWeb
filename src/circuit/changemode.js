@@ -11,6 +11,7 @@ export function changeMode(mode) {
 	document.getElementById('btn_and').classList.remove('select');
 	document.getElementById('btn_or').classList.remove('select');
 	document.getElementById('btn_not').classList.remove('select');
+    document.getElementById('btn_clock').classList.remove('select');
 
     switch (mode) {
         case 'mouse':
@@ -92,6 +93,12 @@ export function changeMode(mode) {
             canvasContainer.style.cursor = 'crosshair';
 
             setMode('notMode');
+            break;
+        case 'clock':
+            btn_clock.classList.add('select');
+            canvasContainer.style.cursor = 'crosshair';
+
+            setMode('clockMode');
             break;
     }
 }

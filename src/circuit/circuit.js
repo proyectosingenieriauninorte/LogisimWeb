@@ -11,6 +11,7 @@ import {
 	clearCanvas,
 	initCanvas,
 } from '../canvas/canvasSetup.js';
+import ClockPin from '../../components/Clock.js';
 
 // Coleccion de componentes y cables
 class circuit {
@@ -164,9 +165,11 @@ class circuit {
 			obj.lines.forEach((ln) =>
 				drawer.drawLine(ctxBack, ln.getPoints(), color)
 			);
+		}  else if (obj instanceof ClockPin) {
+			drawer.drawClockPin(obj, ctxBack);
 		} else if (obj instanceof Pin) {
 			drawer.drawPin(obj, ctxBack);
-		} else if (obj instanceof Gate) {
+		}  else if (obj instanceof Gate) {
 			drawer.drawGate(obj, ctxBack);
 		} else {
 			console.error('No se pudo pintar el objeto');

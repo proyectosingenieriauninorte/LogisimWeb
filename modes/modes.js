@@ -10,7 +10,8 @@ import {
 import {
     handleClickPin,
     handleClickDelete,
-    handleClickGate
+    handleClickGate,
+    handleClickClockPin
 } from "../handlers/modesHandlers.js";
 
 import { canvasBack, canvasFront, ctxFront, ctxBack } from "../src/canvas/canvasSetup.js";
@@ -151,12 +152,32 @@ export const eventHandlers = {
             click: null // Se eliminarán los listeners específicos más adelante
         }
     }
+    ,
+    clockMode: {
+        add: {},
+        remove: {
+            mousedown: startDragging,
+            mouseup: endDragging,
+            mousemove: dragCanvas,
+            mousedown: startDrawing,
+            mousedown: handleClickClockPin,
+            mouseup: endDrawing,
+            mousemove: drawCanvas,
+            click: null // Se eliminarán los listeners específicos más adelante
+        }
+    },
 
 };
 
 let handleClickPinListeners = [];
 let handleClickDeleteListeners = [];
 let handleClickGateListeners = [];
+
+export function addEventListenerWithParamClock(eventType, param) {
+    const wrappedHandler = (event) => handleClickClockPin(event, param);
+    handleClickPinListeners.push({ eventType, wrappedHandler });
+    canvasContainer.addEventListener(eventType, wrappedHandler);
+}
 
 export function addEventListenerWithParam(eventType, param) {
     const wrappedHandler = (event) => handleClickPin(event, param);

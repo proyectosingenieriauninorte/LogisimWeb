@@ -4,6 +4,7 @@ import {
     addEventListenerWithDelete,
     addEventListenerWithGate,
     addEventListenerWithMouse,
+    addEventListenerWithParamClock,
 } from "../modes/modes.js";
 import { ctxFront } from "../src/canvas/canvasSetup.js";
 export function setMode(mode) {
@@ -47,6 +48,9 @@ export function setMode(mode) {
     }
     if (mode === 'mouseMode') {
         addEventListenerWithMouse();
+    }
+    if (mode === 'clockMode') {
+        addEventListenerWithParamClock('mousemove',"-1");
     }
     
 }

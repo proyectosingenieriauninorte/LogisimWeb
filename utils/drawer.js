@@ -32,11 +32,12 @@ export function drawLine(ctx, edges, color = 'black') {
 }
 
 export function drawPin(pin, ctx, etq = true) {
+	console.log("Dibujando pin type ", pin.type);
 	let color = 'black';
 	let value = pin.value;
 	let x = pin.point.x;
 	let y = pin.point.y;
-	let wd = value.length*9;
+	let wd = value.length * 9;
 	let hg = 15;
 
 	switch (value) {
@@ -89,7 +90,51 @@ export function drawPin(pin, ctx, etq = true) {
 	}
 }
 
+export function drawClockPin(pin, ctx) {
+	// Reutilizar el dibujo del Pin pero con alguna marca especial para diferenciarlo
+	console.log("Dibujando pin de reloj");
+	let color = 'black';
+	let value = pin.value;
+	let x = pin.point.x;
+	let y = pin.point.y;
+	let wd = value.length * 9;
+	let hg = 15;
+
+	switch (value) {
+		case 'E':
+			color = 'red';
+			break;
+		case 'D':
+			color = 'blue';
+			break;
+		case '0':
+			color = '#006400';
+			break;
+		case '1':
+			color = '#00d200';
+			break;
+		default:
+			color = 'black';
+			break;
+	}
+
+	ctx.beginPath();
+	ctx.arc(x, y, defaultPointSize * 8, 0, 2 * Math.PI);
+	ctx.fillStyle = color; // Color del nodo según su estado
+	ctx.fill();
+	ctx.closePath();
+
+
+	ctx.beginPath();
+	ctx.fillStyle = color;
+	ctx.font = 'bold ' + hg + 'px Arial';
+	ctx.fillText('CK ' + value, x - wd - 20, y + 5);
+	ctx.closePath();
+
+}
+
 export function drawGate(gate, ctx) {
+	console.log("Dibujando compuerta");
 	let x = gate.point.x;
 	let y = gate.point.y;
 	let name = 'NONE';
@@ -112,7 +157,7 @@ export function drawGate(gate, ctx) {
 	ctx.beginPath();
 	ctx.fillStyle = 'black';
 	ctx.font = 'bold ' + hg + 'px Arial';
-	ctx.fillText(name, x - wd/2, y + hg/3);
+	ctx.fillText(name, x - wd / 2, y + hg / 3);
 	ctx.closePath();
 
 	gate.inputs.forEach((pin) => drawPin(pin, ctx, false));
