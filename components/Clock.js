@@ -2,15 +2,23 @@ import Pin from './Pin.js';
 
 class ClockPin extends Pin {
     constructor(point, type, interval = 2000, parent = null) {
-        // if (ClockPin.instance) {
-        //     return ClockPin.instance;
-        // }
+         if (ClockPin.instance) {
+            ClockPin.instance.addLocation(point);
+             return ClockPin.instance;
+         }
         super(point, type, '0', parent); // El valor inicial es '0'
         this.interval = interval;  // Intervalo de tiempo en milisegundos
         this.isRunning = false;  // Estado del reloj (encendido/apagado)
         this.subscribers = [];  // Lista de suscriptores
+        this.locations = [point];  // Lista de ubicaciones donde el ClockPin está colocado
+        ClockPin.instance = this;
+    }
 
-        //ClockPin.instance = this;
+      // Añadir una nueva ubicación donde se dibuja el ClockPin
+    addLocation(point) {
+        if (!this.locations.some(loc => loc.isEqualTo(point))) {
+            this.locations.push(point);
+        }
     }
 
     // Inicia el reloj

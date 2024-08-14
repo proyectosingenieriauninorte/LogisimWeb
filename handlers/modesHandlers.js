@@ -99,17 +99,9 @@ export function handleClickClockPin(event, temp_const) {
     var clickedPoint = new Point(coordinates.x, coordinates.y);
     let pin = null;
 
-    pin = new Clock(clickedPoint, 'out');
+    //pin = new Clock(clickedPoint, 'out');
 
-    //pin = Clock.getInstance(clickedPoint, 'out');  
-
-    // Limpiar el canvas
-    ctxFront.clearRect(0, 0, canvasFront.width, canvasFront.height);
-    drawClockPin(pin, ctxFront);
-
-    // Guardar el pin actual
-    currentPin = pin;
-
+    
     // Remover el listener de mousedown anterior si existe
 	if (mousedownListener) {
 		canvasContainer.removeEventListener('mousedown', mousedownListener);
@@ -119,6 +111,16 @@ export function handleClickClockPin(event, temp_const) {
     mousedownListener = () => {
         console.log("mousedownListener for handleClickClockPin");
         
+        pin = Clock.getInstance(clickedPoint, 'out');  
+
+        // Limpiar el canvas
+        ctxFront.clearRect(0, 0, canvasFront.width, canvasFront.height);
+        drawClockPin(pin, ctxFront);
+    
+        // Guardar el pin actual
+        currentPin = pin;
+    
+
 		let wire = Circuit.getConnectedComponent(pin.point);
 
         if (wire) {

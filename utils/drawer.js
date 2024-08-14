@@ -3,6 +3,9 @@ import Or from '../components/Or.js';
 import Not from '../components/Not.js';
 import { gridSize, defaultPointSize } from '../config/config.js';
 
+// Lista para almacenar las ubicaciones del ClockPin
+const clockPinLocations = [];
+
 export function drawPoint(x, y, ctx, color = 'black') {
 	ctx.beginPath();
 	ctx.arc(x * gridSize, y * gridSize, defaultPointSize * 8, 0, 2 * Math.PI);
@@ -90,47 +93,53 @@ export function drawPin(pin, ctx, etq = true) {
 	}
 }
 
-export function drawClockPin(pin, ctx) {
-	// Reutilizar el dibujo del Pin pero con alguna marca especial para diferenciarlo
-	console.log("Dibujando pin de reloj");
-	let color = 'black';
-	let value = pin.value;
-	let x = pin.point.x;
-	let y = pin.point.y;
-	let wd = value.length * 9;
-	let hg = 15;
+export function drawClockPin(ctx) {
+    // Reutilizar el dibujo del Pin pero con alguna marca especial para diferenciarlo
+    console.log("Dibujando todos los pins de reloj");
+    clockPinLocations.forEach(pin => {
+        let color = 'black';
+        let value = pin.value;
+        let x = pin.point.x;
+        let y = pin.point.y;
+        let wd = value.length * 9;
+        let hg = 15;
 
-	switch (value) {
-		case 'E':
-			color = 'red';
-			break;
-		case 'D':
-			color = 'blue';
-			break;
-		case '0':
-			color = '#006400';
-			break;
-		case '1':
-			color = '#00d200';
-			break;
-		default:
-			color = 'black';
-			break;
-	}
+        switch (value) {
+            case 'E':
+                color = 'red';
+                break;
+            case 'D':
+                color = 'blue';
+                break;
+            case '0':
+                color = '#006400';
+                break;
+            case '1':
+                color = '#00d200';
+                break;
+            default:
+                color = 'black';
+                break;
+        }
 
-	ctx.beginPath();
-	ctx.arc(x, y, defaultPointSize * 8, 0, 2 * Math.PI);
-	ctx.fillStyle = color; // Color del nodo según su estado
-	ctx.fill();
-	ctx.closePath();
+        ctx.beginPath();
+        ctx.arc(x, y, defaultPointSize * 8, 0, 2 * Math.PI);
+        ctx.fillStyle = color;
+        ctx.fill();
+        ctx.closePath();
 
+        ctx.beginPath();
+        ctx.fillStyle = color;
+        ctx.font = 'bold ' + hg + 'px Arial';
+        ctx.fillText('CK ' + value, x - wd - 20, y + 5);
+        ctx.closePath();
+    });
+}
 
-	ctx.beginPath();
-	ctx.fillStyle = color;
-	ctx.font = 'bold ' + hg + 'px Arial';
-	ctx.fillText('CK ' + value, x - wd - 20, y + 5);
-	ctx.closePath();
-
+export function addClockPinLocation(pin) {
+    if (!clockPinLocations.some(loc => loc.point.isEqualTo(pin.point))) {
+        clockPinLocations.push(pin);
+    }
 }
 
 export function drawGate(gate, ctx) {
