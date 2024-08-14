@@ -100,7 +100,9 @@ export function handleClickClockPin(event, temp_const) {
     let pin = null;
 
     pin = new Clock(clickedPoint, 'out');
-	
+
+    //pin = Clock.getInstance(clickedPoint, 'out');  
+
     // Limpiar el canvas
     ctxFront.clearRect(0, 0, canvasFront.width, canvasFront.height);
     drawClockPin(pin, ctxFront);
@@ -116,7 +118,7 @@ export function handleClickClockPin(event, temp_const) {
     // Crear un nuevo listener de mousedown
     mousedownListener = () => {
         console.log("mousedownListener for handleClickClockPin");
-        pin.start();
+        
 		let wire = Circuit.getConnectedComponent(pin.point);
 
         if (wire) {
@@ -135,6 +137,12 @@ export function handleClickClockPin(event, temp_const) {
 
         // Limpiar el pin actual después de añadirlo
         currentPin = null;
+        pin.start();
+              // Suscribirse a los eventos del ClockPin para actualizar el circuito
+       pin.subscribe((newValue) => {
+         console.log(`ClockPin updated value to ${newValue}`);
+         Circuit.repaintCircuit();  // Redibujar el circuito en cada tick
+     });
     };
     // Agregar el nuevo listener de mousedown
     canvasContainer.addEventListener('mousedown', mousedownListener);
