@@ -1,8 +1,8 @@
 // Importar Funciones y clases
-import { Button } from "components/buttons.js"
-import { changeMode } from "src/circuit/changemode.js";
-import { resizeCanvas, clearCanvas } from "src/canvas/canvasSetup.js"
-import circuit from "src/circuit/circuit.js";
+import { Button } from "/components/buttons.js"
+import { changeMode } from "/src/circuit/changemode.js";
+import { resizeCanvas, clearCanvas } from "/src/canvas/canvasSetup.js"
+import circuit from "/src/circuit/circuit.js";
 
 /* Inicialización del canvas */
 
