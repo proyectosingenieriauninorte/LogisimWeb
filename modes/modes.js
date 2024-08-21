@@ -1,12 +1,12 @@
 import {
     startDrawing,
     endDrawing, drawCanvas
-} from "../modes/drawing.js"
+} from "./drawing.js"
 import {
     startDragging,
     endDragging,
     dragCanvas
-} from "../modes/dragging.js"
+} from "./dragging.js"
 import {
     handleClickPin,
     handleClickDelete,
