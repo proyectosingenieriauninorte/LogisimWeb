@@ -15,9 +15,9 @@ import {
 
 import { canvasBack, canvasFront, ctxFront, ctxBack } from "../src/canvas/canvasSetup.js";
 
-import { Circuit } from "../canvas.js";
+import { Circuit } from "../../canvas.js";
 
-import { openModal } from "../modal.js";
+import { openModal } from "../../modal.js";
 
 import { getRectAt, getPinAt, drawComponents, drawPins, roundToGrid } from "../utils/mover.js";
 

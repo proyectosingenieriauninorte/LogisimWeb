@@ -1,4 +1,4 @@
-import Circuit from '../canvas.js';
+import Circuit from '../../canvas.js';
 
 import { getMousePos } from '../utils/util.js';
 import {
