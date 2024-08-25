@@ -1,0 +1,26 @@
+name: Deploy Server
+
+on:
+  push:
+    branches: [ feature/add-server ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:       
+    - name: Deploy using ssh
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        port: 22
+        script: |
+          cd /home/proyecto/LogisimWeb/
+          git pull origin feature/add-server
+          git status
+          docker stop logisimweb-app
+          docker rm logisimweb-app
+          docker build -t logisimweb .
+          docker run -dit -p 50014:3000 --restart unless-stopped --name logisimweb-app logisimweb
