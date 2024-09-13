@@ -23,4 +23,4 @@ jobs:
           docker stop logisimweb-app
           docker rm logisimweb-app
           docker build -t logisimweb .
-          docker run -dit -p 50014:3000 --restart unless-stopped --name logisimweb-app logisimweb
+          docker run -dit -p 5014:3000 --restart unless-stopped --name logisimweb-app logisimweb
